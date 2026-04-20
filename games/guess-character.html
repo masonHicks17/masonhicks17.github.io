@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guess the Character — Mason Hicks</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/dark-mode.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <span class="logo-text"><a href="/" style="color: var(--color-primary); text-decoration: none;">MH</a></span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="/#games" class="nav-link">Back to Games</a></li>
+            </ul>
+            <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="5"></circle>
+                    <line x1="12" y1="1" x2="12" y2="3"></line>
+                    <line x1="12" y1="21" x2="12" y2="23"></line>
+                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                    <line x1="1" y1="12" x2="3" y2="12"></line>
+                    <line x1="21" y1="12" x2="23" y2="12"></line>
+                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                </svg>
+            </button>
+        </div>
+    </nav>
+
+    <section class="section" style="padding-top: calc(70px + var(--spacing-3xl));">
+        <div class="container">
+            <a href="/#games" class="btn btn-text" style="margin-bottom: var(--spacing-2xl);">← Back</a>
+
+            <div style="max-width: 700px; margin: 0 auto;">
+                <h1 style="margin-bottom: var(--spacing-lg);">Guess the Character</h1>
+                <p style="margin-bottom: var(--spacing-3xl);">Think of a character from any movie, TV show, or book. The AI will try to guess who you're thinking of through intelligent questions.</p>
+
+                <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-xl); padding: var(--spacing-3xl); margin-bottom: var(--spacing-2xl);">
+                    <div id="gameContent">
+                        <h2 style="margin-bottom: var(--spacing-xl); text-align: center;">Think of a Character</h2>
+                        <p style="margin-bottom: var(--spacing-2xl); text-align: center; color: var(--color-neutral-600);">Once you have someone in mind, I'll ask you questions to figure out who it is.</p>
+
+                        <div style="background: var(--color-accent-light); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: var(--spacing-lg); margin-bottom: var(--spacing-2xl);">
+                            <div id="questionArea">
+                                <p style="margin-bottom: var(--spacing-lg);"><strong>Question 1:</strong> Is your character from a movie?</p>
+                                <div style="display: flex; gap: var(--spacing-md);">
+                                    <button class="btn btn-primary" onclick="answerQuestion('yes')" style="flex: 1;">Yes</button>
+                                    <button class="btn btn-secondary" onclick="answerQuestion('no')" style="flex: 1;">No</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="statsArea">
+                            <p style="text-align: center; font-size: var(--text-sm); color: var(--color-neutral-500);">Questions asked: <span id="questionCount">0</span></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="background: var(--color-accent-light); border: 1px solid var(--color-border); border-radius: var(--radius-xl); padding: var(--spacing-2xl);">
+                    <h3>About This Game</h3>
+                    <p>A logic-based guessing game that explores decision trees and binary search concepts. The game learns which questions are most effective at narrowing down possibilities.</p>
+                    <p style="margin-bottom: 0;"><strong>Tech:</strong> JavaScript, decision tree algorithms</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 Mason Hicks. All rights reserved. Built with curiosity and care.</p>
+        </div>
+    </footer>
+
+    <script src="../js/theme-toggle.js"></script>
+    <script>
+        // Simple guessing game with a basic decision tree
+        const questions = [
+            { q: 'Is your character from a movie?', yes: 1, no: 2 },
+            { q: 'Did they appear before 2000?', yes: 3, no: 4 },
+            { q: 'Are they from a sitcom?', yes: 5, no: 6 },
+            { q: 'Are they a main character?', yes: 7, no: 8 },
+            { q: 'Are they human?', yes: 9, no: 10 },
+            { q: 'Are they a villain?', yes: 11, no: 12 },
+            { q: 'Are they known for comedy?', yes: 13, no: 14 },
+            { q: 'Are they from an action movie?', yes: 15, no: 16 },
+            { q: 'Do they have superpowers?', yes: 17, no: 18 },
+            { q: 'Are they the protagonist?', yes: 19, no: 20 }
+        ];
+
+        const guesses = [
+            'Sherlock Holmes',
+            'Spider-Man',
+            'Darth Vader',
+            'Elsa from Frozen',
+            'Michael Scott',
+            'Ross Geller',
+            'The Joker',
+            'Tony Stark',
+            'Harry Potter',
+            'Hermione Granger'
+        ];
+
+        let currentQuestion = 0;
+        let questionCount = 0;
+
+        function answerQuestion(answer) {
+            questionCount++;
+            document.getElementById('questionCount').textContent = questionCount;
+
+            const nextQuestion = answer === 'yes' ? questions[currentQuestion].yes : questions[currentQuestion].no;
+
+            if (nextQuestion < questions.length) {
+                currentQuestion = nextQuestion;
+                displayQuestion();
+            } else {
+                makeGuess(guesses[nextQuestion - questions.length] || 'A mysterious character');
+            }
+        }
+
+        function displayQuestion() {
+            if (currentQuestion < questions.length) {
+                const q = questions[currentQuestion];
+                document.getElementById('questionArea').innerHTML = `
+                    <p style="margin-bottom: var(--spacing-lg);"><strong>Question ${questionCount + 1}:</strong> ${q.q}</p>
+                    <div style="display: flex; gap: var(--spacing-md);">
+                        <button class="btn btn-primary" onclick="answerQuestion('yes')" style="flex: 1;">Yes</button>
+                        <button class="btn btn-secondary" onclick="answerQuestion('no')" style="flex: 1;">No</button>
+                    </div>
+                `;
+            }
+        }
+
+        function makeGuess(character) {
+            document.getElementById('questionArea').innerHTML = `
+                <div style="text-align: center;">
+                    <p style="font-size: var(--text-xl); margin-bottom: var(--spacing-lg);"><strong>I think you're thinking of:</strong></p>
+                    <h2 style="margin-bottom: var(--spacing-xl); color: var(--color-accent);">${character}</h2>
+                    <div style="display: flex; gap: var(--spacing-md); justify-content: center;">
+                        <button class="btn btn-primary" onclick="location.reload()">Correct! Play Again</button>
+                        <button class="btn btn-secondary" onclick="location.reload()">Wrong, Try Again</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        displayQuestion();
+    </script>
+</body>
+</html>

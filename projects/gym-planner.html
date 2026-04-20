@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gym Planner Assistant — Mason Hicks</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/dark-mode.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <span class="logo-text"><a href="/" style="color: var(--color-primary); text-decoration: none;">MH</a></span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="/#projects" class="nav-link">Back to Portfolio</a></li>
+            </ul>
+            <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="5"></circle>
+                    <line x1="12" y1="1" x2="12" y2="3"></line>
+                    <line x1="12" y1="21" x2="12" y2="23"></line>
+                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                    <line x1="1" y1="12" x2="3" y2="12"></line>
+                    <line x1="21" y1="12" x2="23" y2="12"></line>
+                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                </svg>
+            </button>
+        </div>
+    </nav>
+
+    <section class="section" style="padding-top: calc(70px + var(--spacing-3xl));">
+        <div class="container">
+            <a href="/#projects" class="btn btn-text" style="margin-bottom: var(--spacing-2xl);">← Back</a>
+
+            <div style="max-width: 800px;">
+                <div class="placeholder-image placeholder-2" style="width: 100%; height: 300px; margin-bottom: var(--spacing-3xl); border-radius: var(--radius-xl);"></div>
+
+                <h1>Gym Planner Assistant</h1>
+
+                <div style="display: flex; gap: var(--spacing-lg); margin-bottom: var(--spacing-2xl); flex-wrap: wrap;">
+                    <span class="tag">Next.js</span>
+                    <span class="tag">AI Integration</span>
+                    <span class="tag">Fitness</span>
+                </div>
+
+                <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-xl); padding: var(--spacing-2xl); margin-bottom: var(--spacing-2xl);">
+                    <h3>Overview</h3>
+                    <p>An AI-powered workout planning tool that generates personalized training routines based on your fitness goals, available equipment, and time constraints. The app uses Claude to create smart, adaptable routines that evolve with your progress.</p>
+                </div>
+
+                <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-xl); padding: var(--spacing-2xl); margin-bottom: var(--spacing-2xl);">
+                    <h3>The Problem</h3>
+                    <p>Generic workout plans don't account for individual constraints. I wanted a tool that would ask the right questions and generate routines tailored to my specific situation—not just another one-size-fits-all program.</p>
+                </div>
+
+                <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-xl); padding: var(--spacing-2xl); margin-bottom: var(--spacing-2xl);">
+                    <h3>The Solution</h3>
+                    <p>I built a conversational interface that gathers your requirements (goals, equipment, time availability) and uses AI to generate customized workout plans. Users can refine the plan by providing feedback, and the AI adapts accordingly.</p>
+                </div>
+
+                <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-xl); padding: var(--spacing-2xl); margin-bottom: var(--spacing-2xl);">
+                    <h3>Key Features</h3>
+                    <ul style="margin-left: var(--spacing-lg); color: var(--color-neutral-600);">
+                        <li>Conversational onboarding flow</li>
+                        <li>AI-generated personalized workout routines</li>
+                        <li>Exercise demonstrations and form tips</li>
+                        <li>Progress tracking and plan adjustments</li>
+                        <li>Export routines as PDF</li>
+                        <li>Mobile-friendly interface</li>
+                    </ul>
+                </div>
+
+                <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-xl); padding: var(--spacing-2xl); margin-bottom: var(--spacing-2xl);">
+                    <h3>Technical Stack</h3>
+                    <p><strong>Frontend:</strong> Next.js, React, TypeScript, Tailwind CSS</p>
+                    <p><strong>AI:</strong> Claude API, prompt engineering</p>
+                    <p><strong>Database:</strong> Supabase (PostgreSQL)</p>
+                    <p><strong>Deployment:</strong> Vercel</p>
+                </div>
+
+                <div style="background: var(--color-accent-light); border: 1px solid var(--color-border); border-radius: var(--radius-xl); padding: var(--spacing-2xl);">
+                    <h3>AI Workflow Insight</h3>
+                    <p>This project was a great exercise in prompt engineering. I learned how to structure prompts for consistency, handle edge cases gracefully, and use the API efficiently. The key was understanding how to break the problem into smaller, atomic prompts.</p>
+                </div>
+
+                <div style="margin-top: var(--spacing-3xl); display: flex; gap: var(--spacing-md); flex-wrap: wrap;">
+                    <a href="https://example.com/gym-planner" class="btn btn-primary">Try the App</a>
+                    <a href="https://github.com/masonhicks/gym-planner" class="btn btn-secondary">View on GitHub</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 Mason Hicks. All rights reserved. Built with curiosity and care.</p>
+        </div>
+    </footer>
+
+    <script src="../js/theme-toggle.js"></script>
+    <script src="../js/animations.js"></script>
+    <script src="../js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,176 @@
+<!--
+  PROJECT DETAIL PAGE TEMPLATE
+
+  How to use this template:
+  1. Copy this file and rename it to your-project-name.html
+  2. Replace all [PLACEHOLDER] sections with your content
+  3. Update the image gradient colors or replace with actual images
+  4. Link to this page from index.html in the featured projects section
+  5. Update the back link to match the section you're linking from
+
+  For more details, see README.md
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>[PROJECT TITLE] — Mason Hicks</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/dark-mode.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <span class="logo-text"><a href="/" style="color: var(--color-primary); text-decoration: none;">MH</a></span>
+            </div>
+            <ul class="nav-menu">
+                <!-- Update the href below to match where you linked from (projects, games, etc.) -->
+                <li><a href="/#projects" class="nav-link">Back to Portfolio</a></li>
+            </ul>
+            <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="5"></circle>
+                    <line x1="12" y1="1" x2="12" y2="3"></line>
+                    <line x1="12" y1="21" x2="12" y2="23"></line>
+                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                    <line x1="1" y1="12" x2="3" y2="12"></line>
+                    <line x1="21" y1="12" x2="23" y2="12"></line>
+                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                </svg>
+            </button>
+        </div>
+    </nav>
+
+    <section class="section" style="padding-top: calc(70px + var(--spacing-3xl));">
+        <div class="container">
+            <!-- Back button -->
+            <a href="/#projects" class="btn btn-text" style="margin-bottom: var(--spacing-2xl);">← Back</a>
+
+            <div style="max-width: 800px;">
+                <!-- Project Hero Image -->
+                <!-- Option 1: Use a placeholder gradient (change color classes) -->
+                <div class="placeholder-image placeholder-1" style="width: 100%; height: 300px; margin-bottom: var(--spacing-3xl); border-radius: var(--radius-xl);"></div>
+
+                <!-- Option 2: Use a real image (uncomment and update src) -->
+                <!-- <img src="../assets/images/project-hero.jpg" alt="[PROJECT TITLE]" style="width: 100%; border-radius: var(--radius-xl); margin-bottom: var(--spacing-3xl);"> -->
+
+                <!-- Project Title -->
+                <h1>[PROJECT TITLE]</h1>
+
+                <!-- Tech Tags -->
+                <div style="display: flex; gap: var(--spacing-lg); margin-bottom: var(--spacing-2xl); flex-wrap: wrap;">
+                    <span class="tag">[TECH]</span>
+                    <span class="tag">[TECH]</span>
+                    <span class="tag">[CATEGORY]</span>
+                </div>
+
+                <!-- Overview Section -->
+                <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-xl); padding: var(--spacing-2xl); margin-bottom: var(--spacing-2xl);">
+                    <h3>Overview</h3>
+                    <p>[ONE PARAGRAPH describing what the project is and why it matters. This is the high-level summary that helps visitors quickly understand what you built.]</p>
+                </div>
+
+                <!-- The Problem Section -->
+                <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-xl); padding: var(--spacing-2xl); margin-bottom: var(--spacing-2xl);">
+                    <h3>The Problem</h3>
+                    <p>[Explain the problem or need this project addresses. What was broken? What was missing? Why did you care about solving it?]</p>
+                </div>
+
+                <!-- The Solution Section -->
+                <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-xl); padding: var(--spacing-2xl); margin-bottom: var(--spacing-2xl);">
+                    <h3>The Solution</h3>
+                    <p>[Describe your approach and how you solved the problem. What's unique about your solution? Why did you make certain choices?]</p>
+                </div>
+
+                <!-- Key Features Section -->
+                <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-xl); padding: var(--spacing-2xl); margin-bottom: var(--spacing-2xl);">
+                    <h3>Key Features</h3>
+                    <ul style="margin-left: var(--spacing-lg); color: var(--color-neutral-600);">
+                        <li>[Feature 1]</li>
+                        <li>[Feature 2]</li>
+                        <li>[Feature 3]</li>
+                        <li>[Feature 4]</li>
+                    </ul>
+                </div>
+
+                <!-- Technical Stack Section -->
+                <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-xl); padding: var(--spacing-2xl); margin-bottom: var(--spacing-2xl);">
+                    <h3>Technical Stack</h3>
+                    <p><strong>Frontend:</strong> [List frontend technologies]</p>
+                    <p><strong>Backend:</strong> [List backend technologies or "N/A"]</p>
+                    <p><strong>Tools:</strong> [Design, version control, deployment, etc.]</p>
+                </div>
+
+                <!-- Learning / Insight Section -->
+                <!-- This is where you show what you learned or your unique perspective -->
+                <div style="background: var(--color-accent-light); border: 1px solid var(--color-border); border-radius: var(--radius-xl); padding: var(--spacing-2xl);">
+                    <h3>What I Learned</h3>
+                    <p>[Share the key insight or learning from this project. What surprised you? What would you do differently next time? What skill did this help you develop?]</p>
+                </div>
+
+                <!-- Call-to-Action Section -->
+                <div style="margin-top: var(--spacing-3xl); display: flex; gap: var(--spacing-md); flex-wrap: wrap;">
+                    <!-- Update these links with your real project URLs -->
+                    <a href="https://example.com/your-project" class="btn btn-primary">View Live Project</a>
+                    <a href="https://github.com/masonhicks/your-project" class="btn btn-secondary">View on GitHub</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 Mason Hicks. All rights reserved. Built with curiosity and care.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="../js/theme-toggle.js"></script>
+    <script src="../js/animations.js"></script>
+    <script src="../js/main.js"></script>
+</body>
+</html>
+
+<!--
+CUSTOMIZATION NOTES:
+
+1. Image Classes (choose one):
+   - placeholder-1: Purple gradient
+   - placeholder-2: Pink gradient
+   - placeholder-3: Blue gradient
+   - Or use <img> tag with real image
+
+2. Section Cards:
+   - All content sections use the same card styling
+   - Edit the background/border to match the design
+   - Keep headings as <h3> for consistency
+
+3. Back Link:
+   - Change /#projects to /#games if linking from games section
+   - Keep the arrow (←) for visual consistency
+
+4. Call-to-Action Buttons:
+   - Update href to your actual project URLs
+   - Keep the text short and action-oriented
+   - btn-primary = filled, btn-secondary = outline
+
+5. Color/Theme:
+   - All colors come from CSS variables in styles.css
+   - No need to hardcode colors
+   - Dark mode is automatic via CSS
+
+6. Mobile Responsive:
+   - The grid/layout is already responsive
+   - Images scale automatically
+   - Test on mobile before publishing!
+-->
