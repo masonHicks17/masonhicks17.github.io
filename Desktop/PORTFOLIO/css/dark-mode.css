@@ -1,0 +1,213 @@
+/* ============================================
+   DARK MODE THEME
+   ============================================ */
+
+body.dark-mode {
+    --color-background: #0f0e0d;
+    --color-foreground: #fafaf9;
+    --color-border: #292524;
+    --color-surface: #1c1917;
+
+    --color-primary-light: rgba(26, 58, 82, 0.2);
+    --color-accent-light: rgba(255, 107, 53, 0.15);
+    --color-accent-muted: rgba(255, 107, 53, 0.15);
+}
+
+body.dark-mode p {
+    color: #d6d3d1;
+}
+
+body.dark-mode .navbar {
+    background: rgba(15, 14, 13, 0.95);
+    border-bottom-color: #292524;
+}
+
+body.dark-mode .nav-link {
+    color: #a8a29e;
+}
+
+body.dark-mode .theme-toggle {
+    border-color: #292524;
+    color: #a8a29e;
+}
+
+body.dark-mode .theme-toggle:hover {
+    background: #1c1917;
+    color: var(--color-secondary);
+    border-color: var(--color-secondary);
+}
+
+body.dark-mode .stat-card {
+    background: #1c1917;
+    border-color: #292524;
+}
+
+body.dark-mode .stat-card:hover {
+    border-color: var(--color-accent);
+}
+
+body.dark-mode .project-card,
+body.dark-mode .game-card {
+    background: #1c1917;
+    border-color: #292524;
+}
+
+body.dark-mode .project-card:hover,
+body.dark-mode .game-card:hover {
+    border-color: var(--color-accent);
+}
+
+body.dark-mode .project-image,
+body.dark-mode .game-image {
+    background: #292524;
+}
+
+body.dark-mode .project-content p,
+body.dark-mode .game-content p {
+    color: #d6d3d1;
+}
+
+body.dark-mode .tag {
+    background: rgba(255, 107, 53, 0.15);
+    color: #ff8a5b;
+}
+
+body.dark-mode .workflow-card {
+    background: #1c1917;
+    border-color: #292524;
+}
+
+body.dark-mode .workflow-card:hover {
+    border-color: var(--color-accent);
+}
+
+body.dark-mode .workflow-card p {
+    color: #d6d3d1;
+}
+
+body.dark-mode .content-lab-card {
+    background: linear-gradient(135deg, rgba(26, 58, 82, 0.3) 0%, rgba(255, 107, 53, 0.1) 100%);
+    border-color: #292524;
+}
+
+body.dark-mode .content-lab-card:hover {
+    border-color: var(--color-accent);
+}
+
+body.dark-mode .content-lab-card p {
+    color: #d6d3d1;
+}
+
+body.dark-mode .lab-subtitle {
+    color: #a8a29e;
+}
+
+body.dark-mode .experience-column {
+    background: #1c1917;
+    border-color: #292524;
+}
+
+body.dark-mode .experience-item p {
+    color: #d6d3d1;
+}
+
+body.dark-mode .skill-group p {
+    color: #d6d3d1;
+}
+
+body.dark-mode .contact-card {
+    background: #1c1917;
+    border-color: #292524;
+}
+
+body.dark-mode .contact-card:hover {
+    background: rgba(255, 107, 53, 0.1);
+    border-color: var(--color-accent);
+}
+
+body.dark-mode .contact-card p {
+    color: #d6d3d1;
+}
+
+body.dark-mode .contact-intro {
+    color: #d6d3d1;
+}
+
+body.dark-mode .footer {
+    background: #1c1917;
+    border-top-color: #292524;
+}
+
+body.dark-mode .footer p {
+    color: #a8a29e;
+}
+
+body.dark-mode ::-webkit-scrollbar-track {
+    background: #1c1917;
+}
+
+body.dark-mode ::-webkit-scrollbar-thumb {
+    background: #44403c;
+}
+
+body.dark-mode ::-webkit-scrollbar-thumb:hover {
+    background: #57534e;
+}
+
+/* Hero section adjustments for dark mode */
+body.dark-mode .hero-tagline {
+    color: #d6d3d1;
+}
+
+body.dark-mode .hero-description {
+    color: #d6d3d1;
+}
+
+body.dark-mode .about-text p {
+    color: #d6d3d1;
+}
+
+body.dark-mode .about-stats {
+    color: #d6d3d1;
+}
+
+body.dark-mode .section-header h2 {
+    color: #fafaf9;
+}
+
+body.dark-mode .column-title {
+    color: #ff8a5b;
+}
+
+body.dark-mode .experience-role {
+    color: #ff8a5b;
+}
+
+body.dark-mode .experience-item h4 {
+    color: #fafaf9;
+}
+
+body.dark-mode .workflow-number {
+    color: #ff8a5b;
+}
+
+body.dark-mode .stat-number {
+    color: #ff8a5b;
+}
+
+body.dark-mode .project-content h3,
+body.dark-mode .game-content h3 {
+    color: #fafaf9;
+}
+
+body.dark-mode .workflow-card h3 {
+    color: #fafaf9;
+}
+
+body.dark-mode .content-lab-card h3 {
+    color: #fafaf9;
+}
+
+body.dark-mode .contact-card h4 {
+    color: #fafaf9;
+}

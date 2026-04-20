@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Choose Your Path — Mason Hicks</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/dark-mode.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <span class="logo-text"><a href="/" style="color: var(--color-primary); text-decoration: none;">MH</a></span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="/#games" class="nav-link">Back to Games</a></li>
+            </ul>
+            <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="5"></circle>
+                    <line x1="12" y1="1" x2="12" y2="3"></line>
+                    <line x1="12" y1="21" x2="12" y2="23"></line>
+                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                    <line x1="1" y1="12" x2="3" y2="12"></line>
+                    <line x1="21" y1="12" x2="23" y2="12"></line>
+                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                </svg>
+            </button>
+        </div>
+    </nav>
+
+    <section class="section" style="padding-top: calc(70px + var(--spacing-3xl));">
+        <div class="container">
+            <a href="/#games" class="btn btn-text" style="margin-bottom: var(--spacing-2xl);">← Back</a>
+
+            <div style="max-width: 700px; margin: 0 auto;">
+                <h1 style="margin-bottom: var(--spacing-lg);">Choose Your Path</h1>
+                <p style="margin-bottom: var(--spacing-3xl);">An interactive narrative game exploring branching storytelling and state management through player choices.</p>
+
+                <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-xl); padding: var(--spacing-3xl); margin-bottom: var(--spacing-2xl);">
+                    <div id="gameContent">
+                        <h2 id="sceneTitle" style="margin-bottom: var(--spacing-xl);">Welcome to Your Adventure</h2>
+                        <p id="sceneText" style="margin-bottom: var(--spacing-2xl); font-size: var(--text-lg);">You wake up in a mysterious forest with no memory of how you got here. The air is cool, and you can hear two distinct sounds in the distance.</p>
+                        <div id="choicesContainer" style="display: flex; flex-direction: column; gap: var(--spacing-md);">
+                            <button class="btn btn-primary" onclick="makeChoice('left')" style="justify-content: flex-start; text-align: left;">← Turn left toward the sound of running water</button>
+                            <button class="btn btn-secondary" onclick="makeChoice('right')" style="justify-content: flex-start; text-align: left;">→ Turn right toward the strange lights</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="background: var(--color-accent-light); border: 1px solid var(--color-border); border-radius: var(--radius-xl); padding: var(--spacing-2xl);">
+                    <h3>About This Game</h3>
+                    <p>A branching narrative game built to explore state management and dynamic content rendering. Each choice leads to a new scene with its own set of paths.</p>
+                    <p style="margin-bottom: 0;"><strong>Tech:</strong> Vanilla JavaScript, localStorage for save states</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 Mason Hicks. All rights reserved. Built with curiosity and care.</p>
+        </div>
+    </footer>
+
+    <script src="../js/theme-toggle.js"></script>
+    <script>
+        const scenes = {
+            start: {
+                title: 'Welcome to Your Adventure',
+                text: 'You wake up in a mysterious forest with no memory of how you got here. The air is cool, and you can hear two distinct sounds in the distance.',
+                choices: [
+                    { text: '← Turn left toward the sound of running water', next: 'river' },
+                    { text: '→ Turn right toward the strange lights', next: 'lights' }
+                ]
+            },
+            river: {
+                title: 'By the River',
+                text: 'You follow the sound and discover a crystal-clear river flowing gently through the forest. On the bank, you notice a small wooden boat and fresh supplies. Someone was here recently.',
+                choices: [
+                    { text: '← Take the boat and travel downstream', next: 'boat' },
+                    { text: '→ Follow the river on foot', next: 'footpath' }
+                ]
+            },
+            lights: {
+                title: 'The Strange Lights',
+                text: 'As you approach, the lights reveal themselves to be bioluminescent creatures dancing in the air. They seem curious about you and begin to swirl around you in patterns that feel almost... intentional.',
+                choices: [
+                    { text: '← Follow the creatures deeper into the forest', next: 'creatures' },
+                    { text: '→ Try to communicate with them', next: 'communicate' }
+                ]
+            },
+            boat: {
+                title: 'The Downstream Journey',
+                text: 'As you drift downstream, the forest transforms around you. The trees grow taller, the air becomes misty. You see the ruins of an ancient structure ahead.',
+                choices: [
+                    { text: '← Investigate the ruins', next: 'ruins' },
+                    { text: '→ Continue downstream', next: 'ending1' }
+                ]
+            },
+            footpath: {
+                title: 'The Hidden Trail',
+                text: 'Following the river on foot, you discover a hidden trail marked with ancient symbols. It leads toward a mountain in the distance.',
+                choices: [
+                    { text: '← Climb the mountain', next: 'mountain' },
+                    { text: '→ Return to safety', next: 'ending2' }
+                ]
+            },
+            creatures: {
+                title: 'Deep in the Woods',
+                text: 'The bioluminescent creatures lead you to a clearing where thousands of them create a dome of light. In the center, you find a door that wasn\'t made by nature.',
+                choices: [
+                    { text: '← Open the door', next: 'ending3' },
+                    { text: '→ Stay in the clearing', next: 'ending4' }
+                ]
+            },
+            communicate: {
+                title: 'A Connection',
+                text: 'The creatures respond to your calm demeanor, forming patterns that seem to guide you. They lead you toward a hidden sanctuary.',
+                choices: [
+                    { text: '← Enter the sanctuary', next: 'ending5' },
+                    { text: '→ Ask them to show you home', next: 'ending6' }
+                ]
+            },
+            ruins: {
+                title: 'The Ancient Ruins',
+                text: 'The ruins reveal a civilization far older than you imagined. Inside, you find a map and a journal. It appears to show the way out of this forest.',
+                choices: [
+                    { text: '← Follow the map', next: 'ending7' },
+                    { text: '→ Read the journal', next: 'ending8' }
+                ]
+            },
+            mountain: {
+                title: 'The Summit',
+                text: 'From the mountain top, you can see the entire forest and beyond—a village lies to the east. You finally know which direction to go.',
+                choices: [
+                    { text: '← Head toward the village', next: 'ending7' },
+                    { text: '→ Marvel at the view', next: 'ending9' }
+                ]
+            },
+            ending1: {
+                title: 'The End',
+                text: 'The river eventually leads you back to civilization. You never learn the forest\'s true nature, but you carry its mystery with you forever.',
+                choices: [
+                    { text: '← Start Over', next: 'start' }
+                ]
+            },
+            ending2: {
+                title: 'Safety',
+                text: 'You return to familiar territory and eventually find your way home. The forest remains a strange dream.',
+                choices: [
+                    { text: '← Start Over', next: 'start' }
+                ]
+            },
+            ending3: {
+                title: 'Discovery',
+                text: 'Beyond the door lies a technological wonder—an ancient alien archive. You\'ve made the discovery of a lifetime.',
+                choices: [
+                    { text: '← Start Over', next: 'start' }
+                ]
+            },
+            ending4: {
+                title: 'Peace',
+                text: 'You find peace in the clearing, protected by the creatures. You belong here now.',
+                choices: [
+                    { text: '← Start Over', next: 'start' }
+                ]
+            },
+            ending5: {
+                title: 'Home',
+                text: 'The sanctuary is filled with others like you. You\'ve finally found where you were meant to be.',
+                choices: [
+                    { text: '← Start Over', next: 'start' }
+                ]
+            },
+            ending6: {
+                title: 'Guidance',
+                text: 'The creatures safely guide you back to civilization. You keep their secret, knowing you can always return.',
+                choices: [
+                    { text: '← Start Over', next: 'start' }
+                ]
+            },
+            ending7: {
+                title: 'Home',
+                text: 'You find the village and rejoin society. The forest seems to fade from memory with each passing day.',
+                choices: [
+                    { text: '← Start Over', next: 'start' }
+                ]
+            },
+            ending8: {
+                title: 'Knowledge',
+                text: 'The journal reveals that this forest is a test ground for human consciousness. You pass, and the forest releases you.',
+                choices: [
+                    { text: '← Start Over', next: 'start' }
+                ]
+            },
+            ending9: {
+                title: 'Enlightenment',
+                text: 'The view grants you profound insight. You understand your place in the world and descend with purpose.',
+                choices: [
+                    { text: '← Start Over', next: 'start' }
+                ]
+            }
+        };
+
+        let currentScene = 'start';
+
+        function updateScene(sceneKey) {
+            const scene = scenes[sceneKey];
+            document.getElementById('sceneTitle').textContent = scene.title;
+            document.getElementById('sceneText').textContent = scene.text;
+
+            const choicesContainer = document.getElementById('choicesContainer');
+            choicesContainer.innerHTML = '';
+
+            scene.choices.forEach(choice => {
+                const button = document.createElement('button');
+                button.className = sceneKey.includes('ending') ? 'btn btn-secondary' : 'btn btn-primary';
+                button.style.justifyContent = 'flex-start';
+                button.style.textAlign = 'left';
+                button.textContent = choice.text;
+                button.onclick = () => makeChoice(choice.next);
+                choicesContainer.appendChild(button);
+            });
+        }
+
+        function makeChoice(sceneKey) {
+            currentScene = sceneKey;
+            updateScene(sceneKey);
+            document.getElementById('gameContent').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        updateScene('start');
+    </script>
+</body>
+</html>

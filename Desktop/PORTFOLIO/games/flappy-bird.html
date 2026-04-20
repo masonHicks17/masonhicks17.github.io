@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flappy Bird Clone — Mason Hicks</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/dark-mode.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <style>
+        .game-container {
+            max-width: 400px;
+            margin: var(--spacing-3xl) auto;
+            background: var(--color-surface);
+            border: 2px solid var(--color-border);
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+        }
+
+        #gameCanvas {
+            display: block;
+            width: 100%;
+            background: linear-gradient(180deg, #87CEEB 0%, #E0F6FF 100%);
+        }
+
+        .game-info {
+            padding: var(--spacing-xl);
+            background: var(--color-surface);
+            border-top: 1px solid var(--color-border);
+            text-align: center;
+        }
+
+        .game-info h3 {
+            margin-bottom: var(--spacing-md);
+        }
+
+        .controls {
+            margin: var(--spacing-lg) 0;
+            padding: var(--spacing-lg);
+            background: var(--color-accent-light);
+            border-radius: var(--radius-md);
+            font-size: var(--text-sm);
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <span class="logo-text"><a href="/" style="color: var(--color-primary); text-decoration: none;">MH</a></span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="/#games" class="nav-link">Back to Games</a></li>
+            </ul>
+            <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="5"></circle>
+                    <line x1="12" y1="1" x2="12" y2="3"></line>
+                    <line x1="12" y1="21" x2="12" y2="23"></line>
+                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                    <line x1="1" y1="12" x2="3" y2="12"></line>
+                    <line x1="21" y1="12" x2="23" y2="12"></line>
+                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                </svg>
+            </button>
+        </div>
+    </nav>
+
+    <section class="section" style="padding-top: calc(70px + var(--spacing-3xl));">
+        <div class="container">
+            <a href="/#games" class="btn btn-text" style="margin-bottom: var(--spacing-2xl);">← Back</a>
+
+            <h1 style="text-align: center; margin-bottom: var(--spacing-lg);">Flappy Bird Clone</h1>
+            <p style="text-align: center; max-width: 600px; margin: 0 auto var(--spacing-2xl);">A clean remake of the classic reflex game. Built to explore game mechanics and canvas rendering.</p>
+
+            <div class="game-container">
+                <canvas id="gameCanvas" width="400" height="500"></canvas>
+                <div class="game-info">
+                    <h3>Score: <span id="score">0</span></h3>
+                    <div class="controls">
+                        <p><strong>How to Play:</strong></p>
+                        <p>Click or tap to make the bird jump. Avoid the pipes!</p>
+                    </div>
+                    <button class="btn btn-primary" id="startBtn" onclick="location.reload()">Restart Game</button>
+                </div>
+            </div>
+
+            <div style="max-width: 600px; margin: var(--spacing-3xl) auto;">
+                <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-xl); padding: var(--spacing-2xl); margin-bottom: var(--spacing-2xl);">
+                    <h3>About This Game</h3>
+                    <p>This is a clean, educational remake of Flappy Bird. I built it to understand:</p>
+                    <ul style="margin-left: var(--spacing-lg); color: var(--color-neutral-600);">
+                        <li>Canvas API and drawing operations</li>
+                        <li>Game loop implementation</li>
+                        <li>Collision detection</li>
+                        <li>Simple physics simulation</li>
+                    </ul>
+                </div>
+
+                <div style="background: var(--color-accent-light); border: 1px solid var(--color-border); border-radius: var(--radius-xl); padding: var(--spacing-2xl);">
+                    <h3>Technical Details</h3>
+                    <p><strong>Tech:</strong> Vanilla JavaScript, HTML5 Canvas</p>
+                    <p><strong>Size:</strong> ~3KB (unminified)</p>
+                    <p><strong>Browser Support:</strong> All modern browsers</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 Mason Hicks. All rights reserved. Built with curiosity and care.</p>
+        </div>
+    </footer>
+
+    <script src="../js/theme-toggle.js"></script>
+
+    <script>
+        // Flappy Bird Game Implementation
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const scoreDisplay = document.getElementById('score');
+
+        const bird = {
+            x: 50,
+            y: canvas.height / 2,
+            width: 20,
+            height: 20,
+            velocity: 0,
+            gravity: 0.4,
+            jump: -8
+        };
+
+        const pipes = [];
+        let score = 0;
+        let gameRunning = true;
+        const pipeGap = 120;
+        const pipeWidth = 40;
+        const pipeFrequency = 90;
+        let frameCount = 0;
+
+        function drawBird() {
+            ctx.fillStyle = '#FFD700';
+            ctx.fillRect(bird.x, bird.y, bird.width, bird.height);
+        }
+
+        function drawPipes() {
+            pipes.forEach((pipe, index) => {
+                ctx.fillStyle = '#228B22';
+                ctx.fillRect(pipe.x, 0, pipeWidth, pipe.top);
+                ctx.fillRect(pipe.x, pipe.top + pipeGap, pipeWidth, canvas.height - pipe.top - pipeGap);
+
+                if (pipe.x + pipeWidth < bird.x && !pipe.counted) {
+                    score++;
+                    scoreDisplay.textContent = score;
+                    pipe.counted = true;
+                }
+
+                if (pipe.x < -pipeWidth) {
+                    pipes.splice(index, 1);
+                }
+            });
+        }
+
+        function checkCollision() {
+            pipes.forEach(pipe => {
+                if (
+                    bird.x < pipe.x + pipeWidth &&
+                    bird.x + bird.width > pipe.x &&
+                    (bird.y < pipe.top || bird.y + bird.height > pipe.top + pipeGap)
+                ) {
+                    gameRunning = false;
+                }
+            });
+
+            if (bird.y + bird.height > canvas.height || bird.y < 0) {
+                gameRunning = false;
+            }
+        }
+
+        function updateGame() {
+            bird.velocity += bird.gravity;
+            bird.y += bird.velocity;
+
+            frameCount++;
+            if (frameCount % pipeFrequency === 0) {
+                const topPipeHeight = Math.random() * (canvas.height - pipeGap - 50) + 25;
+                pipes.push({
+                    x: canvas.width,
+                    top: topPipeHeight,
+                    counted: false
+                });
+            }
+
+            pipes.forEach(pipe => {
+                pipe.x -= 3;
+            });
+
+            checkCollision();
+        }
+
+        function drawGame() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawPipes();
+            drawBird();
+
+            if (!gameRunning) {
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = '#FFF';
+                ctx.font = '30px Arial';
+                ctx.textAlign = 'center';
+                ctx.fillText('Game Over!', canvas.width / 2, canvas.height / 2 - 20);
+                ctx.font = '20px Arial';
+                ctx.fillText('Score: ' + score, canvas.width / 2, canvas.height / 2 + 20);
+                ctx.fillText('Click to restart', canvas.width / 2, canvas.height / 2 + 60);
+            } else {
+                updateGame();
+                requestAnimationFrame(drawGame);
+            }
+        }
+
+        document.addEventListener('click', () => {
+            if (gameRunning) {
+                bird.velocity = bird.jump;
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === ' ' && gameRunning) {
+                bird.velocity = bird.jump;
+                e.preventDefault();
+            }
+        });
+
+        drawGame();
+    </script>
+</body>
+</html>
