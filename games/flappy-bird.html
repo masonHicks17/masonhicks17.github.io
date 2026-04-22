@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flappy Bird Clone — Mason Hicks</title>
+    <title>Flappy Cave — Mason Hicks</title>
     <link rel="stylesheet" href="../css/styles.css">
     <link rel="stylesheet" href="../css/dark-mode.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -11,38 +11,39 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
     <style>
         .game-container {
-            max-width: 400px;
+            max-width: 420px;
             margin: var(--spacing-3xl) auto;
-            background: var(--color-surface);
-            border: 2px solid var(--color-border);
+            background: #0d0a15;
+            border: 2px solid #2a1f3d;
             border-radius: var(--radius-xl);
             overflow: hidden;
-            box-shadow: var(--shadow-lg);
+            box-shadow: 0 0 40px rgba(120, 60, 220, 0.3), var(--shadow-lg);
         }
-
         #gameCanvas {
             display: block;
             width: 100%;
-            background: linear-gradient(180deg, #87CEEB 0%, #E0F6FF 100%);
+            cursor: pointer;
         }
-
         .game-info {
             padding: var(--spacing-xl);
-            background: var(--color-surface);
-            border-top: 1px solid var(--color-border);
+            background: #0d0a15;
+            border-top: 1px solid #2a1f3d;
             text-align: center;
+            color: #c9b8e8;
         }
-
-        .game-info h3 {
-            margin-bottom: var(--spacing-md);
+        .score-display {
+            font-size: var(--text-2xl);
+            font-weight: 700;
+            color: #e2d4ff;
+            margin-bottom: var(--spacing-sm);
         }
-
         .controls {
-            margin: var(--spacing-lg) 0;
-            padding: var(--spacing-lg);
-            background: var(--color-accent-light);
+            margin: var(--spacing-md) 0 0;
+            padding: var(--spacing-md);
+            background: rgba(120, 60, 220, 0.1);
             border-radius: var(--radius-md);
             font-size: var(--text-sm);
+            color: #9d8bbf;
         }
     </style>
 </head>
@@ -75,38 +76,35 @@
         <div class="container">
             <a href="/#games" class="btn btn-text" style="margin-bottom: var(--spacing-2xl);">← Back</a>
 
-            <h1 style="text-align: center; margin-bottom: var(--spacing-lg);">Flappy Bird Clone</h1>
-            <p style="text-align: center; max-width: 600px; margin: 0 auto var(--spacing-2xl);">A clean remake of the classic reflex game. Built to explore game mechanics and canvas rendering.</p>
+            <h1 style="text-align:center; margin-bottom:var(--spacing-lg);">Flappy Cave</h1>
+            <p style="text-align:center; max-width:500px; margin:0 auto var(--spacing-2xl);">
+                Guide your bat through a dark underground cave. Dodge the stalactites and stalagmites!
+            </p>
 
             <div class="game-container">
-                <canvas id="gameCanvas" width="400" height="500"></canvas>
+                <canvas id="gameCanvas" width="420" height="520"></canvas>
                 <div class="game-info">
-                    <h3>Score: <span id="score">0</span></h3>
-                    <div class="controls">
-                        <p><strong>How to Play:</strong></p>
-                        <p>Click or tap to make the bird jump. Avoid the pipes!</p>
-                    </div>
-                    <button class="btn btn-primary" id="startBtn" onclick="location.reload()">Restart Game</button>
+                    <div class="score-display">Score: <span id="scoreDisplay">0</span></div>
+                    <div class="controls">Click / Tap / Space to flap</div>
                 </div>
             </div>
 
-            <div style="max-width: 600px; margin: var(--spacing-3xl) auto;">
-                <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-xl); padding: var(--spacing-2xl); margin-bottom: var(--spacing-2xl);">
+            <div style="max-width:600px; margin:var(--spacing-3xl) auto;">
+                <div style="background:var(--color-surface); border:1px solid var(--color-border); border-radius:var(--radius-xl); padding:var(--spacing-2xl); margin-bottom:var(--spacing-2xl);">
                     <h3>About This Game</h3>
-                    <p>This is a clean, educational remake of Flappy Bird. I built it to understand:</p>
-                    <ul style="margin-left: var(--spacing-lg); color: var(--color-neutral-600);">
-                        <li>Canvas API and drawing operations</li>
-                        <li>Game loop implementation</li>
-                        <li>Collision detection</li>
-                        <li>Simple physics simulation</li>
+                    <p>A redesign of the classic Flappy Bird with a cave theme — stalactites hang from above, stalagmites rise from below. Built to practice Canvas rendering, game state machines, and physics simulation.</p>
+                    <ul style="margin-left:var(--spacing-lg); color:var(--color-neutral-600);">
+                        <li>Countdown start screen so you're never caught off guard</li>
+                        <li>Smoother, more forgiving physics than the original</li>
+                        <li>Procedural cave rock formations</li>
+                        <li>High score tracked per session</li>
                     </ul>
                 </div>
-
-                <div style="background: var(--color-accent-light); border: 1px solid var(--color-border); border-radius: var(--radius-xl); padding: var(--spacing-2xl);">
+                <div style="background:var(--color-accent-light); border:1px solid var(--color-border); border-radius:var(--radius-xl); padding:var(--spacing-2xl);">
                     <h3>Technical Details</h3>
-                    <p><strong>Tech:</strong> Vanilla JavaScript, HTML5 Canvas</p>
-                    <p><strong>Size:</strong> ~3KB (unminified)</p>
-                    <p><strong>Browser Support:</strong> All modern browsers</p>
+                    <p><strong>Tech:</strong> Vanilla JavaScript, HTML5 Canvas API</p>
+                    <p><strong>Pattern:</strong> Game state machine — start → countdown → playing → dead</p>
+                    <p style="margin-bottom:0;"><strong>Physics:</strong> Gravity 0.22, jump impulse −5.5, pipe speed 2px/frame</p>
                 </div>
             </div>
         </div>
@@ -119,126 +117,384 @@
     </footer>
 
     <script src="../js/theme-toggle.js"></script>
-
     <script>
-        // Flappy Bird Game Implementation
-        const canvas = document.getElementById('gameCanvas');
-        const ctx = canvas.getContext('2d');
-        const scoreDisplay = document.getElementById('score');
+    const canvas = document.getElementById('gameCanvas');
+    const ctx    = canvas.getContext('2d');
+    const W = canvas.width, H = canvas.height;
+    const scoreEl = document.getElementById('scoreDisplay');
 
-        const bird = {
-            x: 50,
-            y: canvas.height / 2,
-            width: 20,
-            height: 20,
-            velocity: 0,
-            gravity: 0.4,
-            jump: -8
-        };
+    // ─── Constants ───────────────────────────────────────────────────────────────
+    const GRAVITY      = 0.22;
+    const JUMP         = -5.5;
+    const PIPE_SPEED   = 2;
+    const PIPE_GAP     = 150;
+    const PIPE_WIDTH   = 48;
+    const PIPE_FREQ    = 110;   // frames between pipe spawns
+    const SPIKE_COUNT  = 6;     // stalactite/stalagmite spikes per formation
+    const SPIKE_HEIGHT = 18;
 
-        const pipes = [];
-        let score = 0;
-        let gameRunning = true;
-        const pipeGap = 120;
-        const pipeWidth = 40;
-        const pipeFrequency = 90;
-        let frameCount = 0;
+    // Colors
+    const C = {
+        bgTop:    '#0d0a15',
+        bgBot:    '#1a1230',
+        rock:     '#3d2e5a',
+        rockEdge: '#5a4580',
+        spike:    '#4a3870',
+        spikeEdge:'#6a5898',
+        batBody:  '#c9b8e8',
+        batWing:  '#9d7de0',
+        batEye:   '#ff3366',
+        glowOrb:  'rgba(120,60,220,0.08)',
+        scoreClr: '#e2d4ff',
+        dimOverlay:'rgba(13,10,21,0.72)',
+    };
 
-        function drawBird() {
-            ctx.fillStyle = '#FFD700';
-            ctx.fillRect(bird.x, bird.y, bird.width, bird.height);
-        }
+    // ─── State ───────────────────────────────────────────────────────────────────
+    // 'start' | 'countdown' | 'playing' | 'dead'
+    let state       = 'start';
+    let countdown   = 3;
+    let cdTimer     = null;
+    let score       = 0;
+    let bestScore   = 0;
+    let frameCount  = 0;
+    let animFrame   = null;
+    let wingPhase   = 0;
 
-        function drawPipes() {
-            pipes.forEach((pipe, index) => {
-                ctx.fillStyle = '#228B22';
-                ctx.fillRect(pipe.x, 0, pipeWidth, pipe.top);
-                ctx.fillRect(pipe.x, pipe.top + pipeGap, pipeWidth, canvas.height - pipe.top - pipeGap);
+    const bat = {
+        x: 80,
+        y: H / 2,
+        r: 14,          // half-width of body
+        vel: 0,
+        reset() { this.y = H / 2; this.vel = 0; }
+    };
 
-                if (pipe.x + pipeWidth < bird.x && !pipe.counted) {
-                    score++;
-                    scoreDisplay.textContent = score;
-                    pipe.counted = true;
-                }
+    let pipes = [];
 
-                if (pipe.x < -pipeWidth) {
-                    pipes.splice(index, 1);
-                }
-            });
-        }
+    // ─── Helpers ─────────────────────────────────────────────────────────────────
 
-        function checkCollision() {
-            pipes.forEach(pipe => {
-                if (
-                    bird.x < pipe.x + pipeWidth &&
-                    bird.x + bird.width > pipe.x &&
-                    (bird.y < pipe.top || bird.y + bird.height > pipe.top + pipeGap)
-                ) {
-                    gameRunning = false;
-                }
-            });
+    function spawnPipe() {
+        const topH = Math.random() * (H - PIPE_GAP - 120) + 40;
+        pipes.push({ x: W, top: topH, scored: false });
+    }
 
-            if (bird.y + bird.height > canvas.height || bird.y < 0) {
-                gameRunning = false;
-            }
-        }
+    function reset() {
+        bat.reset();
+        pipes    = [];
+        score    = 0;
+        frameCount = 0;
+        scoreEl.textContent = '0';
+    }
 
-        function updateGame() {
-            bird.velocity += bird.gravity;
-            bird.y += bird.velocity;
+    // ─── Drawing ─────────────────────────────────────────────────────────────────
 
-            frameCount++;
-            if (frameCount % pipeFrequency === 0) {
-                const topPipeHeight = Math.random() * (canvas.height - pipeGap - 50) + 25;
-                pipes.push({
-                    x: canvas.width,
-                    top: topPipeHeight,
-                    counted: false
-                });
-            }
+    function drawBackground() {
+        const g = ctx.createLinearGradient(0, 0, 0, H);
+        g.addColorStop(0, C.bgTop);
+        g.addColorStop(1, C.bgBot);
+        ctx.fillStyle = g;
+        ctx.fillRect(0, 0, W, H);
 
-            pipes.forEach(pipe => {
-                pipe.x -= 3;
-            });
+        // Ambient glow orbs
+        [[W * 0.25, H * 0.4], [W * 0.7, H * 0.65]].forEach(([ox, oy]) => {
+            const radial = ctx.createRadialGradient(ox, oy, 10, ox, oy, 120);
+            radial.addColorStop(0, C.glowOrb);
+            radial.addColorStop(1, 'transparent');
+            ctx.fillStyle = radial;
+            ctx.fillRect(0, 0, W, H);
+        });
+    }
 
-            checkCollision();
-        }
-
-        function drawGame() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            drawPipes();
-            drawBird();
-
-            if (!gameRunning) {
-                ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
-                ctx.fillStyle = '#FFF';
-                ctx.font = '30px Arial';
-                ctx.textAlign = 'center';
-                ctx.fillText('Game Over!', canvas.width / 2, canvas.height / 2 - 20);
-                ctx.font = '20px Arial';
-                ctx.fillText('Score: ' + score, canvas.width / 2, canvas.height / 2 + 20);
-                ctx.fillText('Click to restart', canvas.width / 2, canvas.height / 2 + 60);
+    function drawSpikes(x, baseY, isTop) {
+        // baseY = edge of the rock face; spikes point toward center
+        const spW = PIPE_WIDTH / SPIKE_COUNT;
+        ctx.fillStyle = C.spike;
+        ctx.strokeStyle = C.spikeEdge;
+        ctx.lineWidth = 1;
+        for (let i = 0; i < SPIKE_COUNT; i++) {
+            const sx = x + i * spW;
+            ctx.beginPath();
+            if (isTop) {
+                // Stalactite: hangs down from top pipe
+                ctx.moveTo(sx, baseY);
+                ctx.lineTo(sx + spW * 0.5, baseY + SPIKE_HEIGHT);
+                ctx.lineTo(sx + spW, baseY);
             } else {
-                updateGame();
-                requestAnimationFrame(drawGame);
+                // Stalagmite: rises from bottom pipe
+                ctx.moveTo(sx, baseY);
+                ctx.lineTo(sx + spW * 0.5, baseY - SPIKE_HEIGHT);
+                ctx.lineTo(sx + spW, baseY);
             }
+            ctx.closePath();
+            ctx.fill();
+            ctx.stroke();
+        }
+    }
+
+    function drawPipe(pipe) {
+        // Top rock formation
+        const grad1 = ctx.createLinearGradient(pipe.x, 0, pipe.x + PIPE_WIDTH, 0);
+        grad1.addColorStop(0, C.rock);
+        grad1.addColorStop(0.5, C.rockEdge);
+        grad1.addColorStop(1, C.rock);
+        ctx.fillStyle = grad1;
+        ctx.fillRect(pipe.x, 0, PIPE_WIDTH, pipe.top);
+        drawSpikes(pipe.x, pipe.top, true);
+
+        // Bottom rock formation
+        const botY = pipe.top + PIPE_GAP;
+        const grad2 = ctx.createLinearGradient(pipe.x, 0, pipe.x + PIPE_WIDTH, 0);
+        grad2.addColorStop(0, C.rock);
+        grad2.addColorStop(0.5, C.rockEdge);
+        grad2.addColorStop(1, C.rock);
+        ctx.fillStyle = grad2;
+        ctx.fillRect(pipe.x, botY, PIPE_WIDTH, H - botY);
+        drawSpikes(pipe.x, botY, false);
+    }
+
+    function drawBat() {
+        wingPhase += 0.25;
+        const { x, y } = bat;
+
+        // Tilt based on velocity
+        const tilt = Math.max(-0.5, Math.min(0.6, bat.vel * 0.06));
+        ctx.save();
+        ctx.translate(x, y);
+        ctx.rotate(tilt);
+
+        // Wings
+        const wingFlap = Math.sin(wingPhase) * 8;
+        ctx.fillStyle = C.batWing;
+        // Left wing
+        ctx.beginPath();
+        ctx.ellipse(-bat.r - 4, wingFlap, 14, 6, -0.4, 0, Math.PI * 2);
+        ctx.fill();
+        // Right wing
+        ctx.beginPath();
+        ctx.ellipse(bat.r + 4, wingFlap, 14, 6, 0.4, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Body
+        ctx.fillStyle = C.batBody;
+        ctx.beginPath();
+        ctx.ellipse(0, 0, bat.r, bat.r * 0.75, 0, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Eye
+        ctx.fillStyle = C.batEye;
+        ctx.beginPath();
+        ctx.arc(bat.r * 0.4, -bat.r * 0.15, 3, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Ear nubs
+        ctx.fillStyle = C.batBody;
+        [-5, 5].forEach(ex => {
+            ctx.beginPath();
+            ctx.moveTo(ex, -bat.r * 0.6);
+            ctx.lineTo(ex - 3, -bat.r * 1.1);
+            ctx.lineTo(ex + 3, -bat.r * 1.1);
+            ctx.closePath();
+            ctx.fill();
+        });
+
+        ctx.restore();
+    }
+
+    function drawScore() {
+        ctx.fillStyle = C.scoreClr;
+        ctx.font = 'bold 28px Inter, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.shadowColor = 'rgba(120,60,220,0.8)';
+        ctx.shadowBlur  = 10;
+        ctx.fillText(score, W / 2, 48);
+        ctx.shadowBlur = 0;
+    }
+
+    function drawStartScreen() {
+        drawBackground();
+        ctx.fillStyle = C.dimOverlay;
+        ctx.fillRect(0, 0, W, H);
+
+        ctx.textAlign = 'center';
+        ctx.fillStyle = '#e2d4ff';
+        ctx.font = 'bold 42px "Playfair Display", serif';
+        ctx.shadowColor = 'rgba(180,120,255,0.9)';
+        ctx.shadowBlur  = 18;
+        ctx.fillText('Flappy Cave', W / 2, H / 2 - 60);
+        ctx.shadowBlur = 0;
+
+        ctx.font = '18px Inter, sans-serif';
+        ctx.fillStyle = '#9d8bbf';
+        ctx.fillText('Think of a Disney character...', W / 2, H / 2 - 10);
+        ctx.fillText('jk — just flap through the cave!', W / 2, H / 2 + 18);
+
+        // Pulsing start prompt
+        const pulse = 0.6 + 0.4 * Math.sin(Date.now() / 400);
+        ctx.globalAlpha = pulse;
+        ctx.fillStyle = '#c9b8e8';
+        ctx.font = 'bold 20px Inter, sans-serif';
+        ctx.fillText('Click / Tap / Space to Start', W / 2, H / 2 + 70);
+        ctx.globalAlpha = 1;
+
+        // Decorative bat hint
+        ctx.fillStyle = '#5a4580';
+        ctx.font = '32px sans-serif';
+        ctx.fillText('🦇', W / 2, H / 2 + 120);
+    }
+
+    function drawCountdown() {
+        drawBackground();
+        pipes.forEach(drawPipe);
+        drawBat();
+
+        ctx.fillStyle = C.dimOverlay;
+        ctx.fillRect(0, 0, W, H);
+
+        ctx.textAlign = 'center';
+        const label = countdown > 0 ? String(countdown) : 'GO!';
+        ctx.font = `bold ${countdown > 0 ? 96 : 72}px "Playfair Display", serif`;
+        ctx.fillStyle = countdown > 0 ? '#e2d4ff' : '#7dff9e';
+        ctx.shadowColor = countdown > 0 ? 'rgba(180,120,255,0.9)' : 'rgba(100,255,140,0.9)';
+        ctx.shadowBlur  = 24;
+        ctx.fillText(label, W / 2, H / 2 + 30);
+        ctx.shadowBlur = 0;
+    }
+
+    function drawDeadScreen() {
+        ctx.fillStyle = C.dimOverlay;
+        ctx.fillRect(0, 0, W, H);
+
+        ctx.textAlign = 'center';
+        ctx.fillStyle = '#ff6699';
+        ctx.font = 'bold 36px "Playfair Display", serif';
+        ctx.shadowColor = 'rgba(255,80,120,0.8)';
+        ctx.shadowBlur  = 16;
+        ctx.fillText('Ouch!', W / 2, H / 2 - 60);
+        ctx.shadowBlur = 0;
+
+        ctx.fillStyle = '#e2d4ff';
+        ctx.font = 'bold 24px Inter, sans-serif';
+        ctx.fillText(`Score: ${score}`, W / 2, H / 2 - 10);
+
+        if (score >= bestScore && score > 0) {
+            ctx.fillStyle = '#ffd700';
+            ctx.font = '16px Inter, sans-serif';
+            ctx.fillText('🏆 New Best!', W / 2, H / 2 + 20);
+        } else if (bestScore > 0) {
+            ctx.fillStyle = '#9d8bbf';
+            ctx.font = '16px Inter, sans-serif';
+            ctx.fillText(`Best: ${bestScore}`, W / 2, H / 2 + 20);
         }
 
-        document.addEventListener('click', () => {
-            if (gameRunning) {
-                bird.velocity = bird.jump;
-            }
-        });
+        const pulse = 0.6 + 0.4 * Math.sin(Date.now() / 400);
+        ctx.globalAlpha = pulse;
+        ctx.fillStyle = '#c9b8e8';
+        ctx.font = 'bold 18px Inter, sans-serif';
+        ctx.fillText('Click / Tap / Space to Try Again', W / 2, H / 2 + 70);
+        ctx.globalAlpha = 1;
+    }
 
-        document.addEventListener('keydown', (e) => {
-            if (e.key === ' ' && gameRunning) {
-                bird.velocity = bird.jump;
-                e.preventDefault();
-            }
-        });
+    // ─── Game Logic ──────────────────────────────────────────────────────────────
 
-        drawGame();
+    function updatePlaying() {
+        bat.vel += GRAVITY;
+        bat.y   += bat.vel;
+
+        frameCount++;
+        if (frameCount % PIPE_FREQ === 0) spawnPipe();
+
+        for (let i = pipes.length - 1; i >= 0; i--) {
+            const p = pipes[i];
+            p.x -= PIPE_SPEED;
+
+            // Score when bat clears the pipe
+            if (!p.scored && p.x + PIPE_WIDTH < bat.x) {
+                p.scored = true;
+                score++;
+                scoreEl.textContent = score;
+            }
+
+            // Collision with rock bodies (use smaller hitbox than visual for fairness)
+            const hx = bat.x - bat.r + 6;
+            const hw = bat.r * 2 - 12;
+            const hy = bat.y - bat.r + 6;
+            const hh = bat.r * 2 - 12;
+
+            const inXRange = hx + hw > p.x && hx < p.x + PIPE_WIDTH;
+            if (inXRange && (hy < p.top || hy + hh > p.top + PIPE_GAP)) {
+                killBat(); return;
+            }
+
+            if (p.x + PIPE_WIDTH < 0) pipes.splice(i, 1);
+        }
+
+        // Floor / ceiling
+        if (bat.y + bat.r > H || bat.y - bat.r < 0) { killBat(); return; }
+    }
+
+    function killBat() {
+        if (score > bestScore) bestScore = score;
+        state = 'dead';
+    }
+
+    // ─── Main Loop ───────────────────────────────────────────────────────────────
+
+    function loop() {
+        ctx.clearRect(0, 0, W, H);
+
+        if (state === 'start') {
+            drawStartScreen();
+        } else if (state === 'countdown') {
+            drawCountdown();
+        } else if (state === 'playing') {
+            drawBackground();
+            pipes.forEach(drawPipe);
+            drawBat();
+            drawScore();
+            updatePlaying();
+        } else if (state === 'dead') {
+            drawBackground();
+            pipes.forEach(drawPipe);
+            drawBat();
+            drawScore();
+            drawDeadScreen();
+        }
+
+        animFrame = requestAnimationFrame(loop);
+    }
+
+    // ─── Input ───────────────────────────────────────────────────────────────────
+
+    function handleInput() {
+        if (state === 'start') {
+            startCountdown();
+        } else if (state === 'playing') {
+            bat.vel = JUMP;
+        } else if (state === 'dead') {
+            reset();
+            startCountdown();
+        }
+    }
+
+    function startCountdown() {
+        state     = 'countdown';
+        countdown = 3;
+        if (cdTimer) clearInterval(cdTimer);
+        cdTimer = setInterval(() => {
+            countdown--;
+            if (countdown <= -1) {
+                clearInterval(cdTimer);
+                cdTimer = null;
+                state = 'playing';
+            }
+        }, 900);
+    }
+
+    canvas.addEventListener('click',     handleInput);
+    canvas.addEventListener('touchstart', e => { e.preventDefault(); handleInput(); }, { passive: false });
+    document.addEventListener('keydown',  e => { if (e.code === 'Space') { e.preventDefault(); handleInput(); } });
+
+    // ─── Start ───────────────────────────────────────────────────────────────────
+    loop();
     </script>
 </body>
 </html>

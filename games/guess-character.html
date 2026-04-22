@@ -3,12 +3,101 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Guess the Character — Mason Hicks</title>
+    <title>Guess the Disney Character — Mason Hicks</title>
     <link rel="stylesheet" href="../css/styles.css">
     <link rel="stylesheet" href="../css/dark-mode.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <style>
+        .game-wrapper {
+            max-width: 680px;
+            margin: 0 auto;
+        }
+        .answer-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--spacing-md);
+        }
+        .answer-btn {
+            padding: var(--spacing-lg) var(--spacing-xl);
+            border-radius: var(--radius-lg);
+            font-size: var(--text-base);
+            font-weight: 600;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.15s ease;
+            font-family: inherit;
+        }
+        .answer-btn:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+        .btn-yes    { background: #16a34a; color: #fff; border-color: #16a34a; }
+        .btn-yes:hover { background: #15803d; }
+        .btn-maybe  { background: #d97706; color: #fff; border-color: #d97706; }
+        .btn-maybe:hover { background: #b45309; }
+        .btn-no     { background: #dc2626; color: #fff; border-color: #dc2626; }
+        .btn-no:hover { background: #b91c1c; }
+        .btn-idk    { background: var(--color-surface); color: var(--color-neutral-600); border-color: var(--color-border); }
+        .btn-idk:hover { background: var(--color-neutral-100); }
+        .progress-bar-track {
+            width: 100%;
+            height: 6px;
+            background: var(--color-border);
+            border-radius: 99px;
+            overflow: hidden;
+        }
+        .progress-bar-fill {
+            height: 100%;
+            background: var(--color-accent);
+            border-radius: 99px;
+            transition: width 0.4s ease;
+        }
+        .character-reveal {
+            text-align: center;
+            animation: fadeIn 0.5s ease;
+        }
+        .character-image {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid var(--color-accent);
+            margin: 0 auto var(--spacing-xl);
+            display: block;
+            background: var(--color-border);
+        }
+        .image-placeholder {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+            margin: 0 auto var(--spacing-xl);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+        }
+        .pool-badge {
+            display: inline-block;
+            padding: var(--spacing-xs) var(--spacing-md);
+            background: var(--color-accent-light);
+            border: 1px solid var(--color-border);
+            border-radius: 99px;
+            font-size: var(--text-sm);
+            color: var(--color-neutral-600);
+            margin-bottom: var(--spacing-xl);
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .question-text {
+            font-size: var(--text-xl);
+            font-weight: 600;
+            line-height: 1.4;
+            margin-bottom: var(--spacing-2xl);
+            min-height: 60px;
+        }
+    </style>
 </head>
 <body>
     <nav class="navbar">
@@ -39,35 +128,21 @@
         <div class="container">
             <a href="/#games" class="btn btn-text" style="margin-bottom: var(--spacing-2xl);">← Back</a>
 
-            <div style="max-width: 700px; margin: 0 auto;">
-                <h1 style="margin-bottom: var(--spacing-lg);">Guess the Character</h1>
-                <p style="margin-bottom: var(--spacing-3xl);">Think of a character from any movie, TV show, or book. The AI will try to guess who you're thinking of through intelligent questions.</p>
+            <div class="game-wrapper">
+                <h1 style="margin-bottom: var(--spacing-md);">Guess the Disney Character ✨</h1>
+                <p style="margin-bottom: var(--spacing-3xl); color: var(--color-neutral-600);">
+                    Think of any Disney character. I'll ask you yes/no questions and try to figure out who it is.
+                </p>
 
-                <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-xl); padding: var(--spacing-3xl); margin-bottom: var(--spacing-2xl);">
-                    <div id="gameContent">
-                        <h2 style="margin-bottom: var(--spacing-xl); text-align: center;">Think of a Character</h2>
-                        <p style="margin-bottom: var(--spacing-2xl); text-align: center; color: var(--color-neutral-600);">Once you have someone in mind, I'll ask you questions to figure out who it is.</p>
-
-                        <div style="background: var(--color-accent-light); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: var(--spacing-lg); margin-bottom: var(--spacing-2xl);">
-                            <div id="questionArea">
-                                <p style="margin-bottom: var(--spacing-lg);"><strong>Question 1:</strong> Is your character from a movie?</p>
-                                <div style="display: flex; gap: var(--spacing-md);">
-                                    <button class="btn btn-primary" onclick="answerQuestion('yes')" style="flex: 1;">Yes</button>
-                                    <button class="btn btn-secondary" onclick="answerQuestion('no')" style="flex: 1;">No</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div id="statsArea">
-                            <p style="text-align: center; font-size: var(--text-sm); color: var(--color-neutral-500);">Questions asked: <span id="questionCount">0</span></p>
-                        </div>
-                    </div>
+                <!-- Game Card -->
+                <div id="gameCard" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-xl); padding: var(--spacing-3xl); margin-bottom: var(--spacing-2xl);">
+                    <div id="gameContent"></div>
                 </div>
 
+                <!-- About -->
                 <div style="background: var(--color-accent-light); border: 1px solid var(--color-border); border-radius: var(--radius-xl); padding: var(--spacing-2xl);">
-                    <h3>About This Game</h3>
-                    <p>A logic-based guessing game that explores decision trees and binary search concepts. The game learns which questions are most effective at narrowing down possibilities.</p>
-                    <p style="margin-bottom: 0;"><strong>Tech:</strong> JavaScript, decision tree algorithms</p>
+                    <h3>How It Works</h3>
+                    <p>The game uses an information-gain algorithm — each question is chosen to split the remaining candidates as evenly as possible, similar to a binary search. Answer <strong>Yes</strong>, <strong>No</strong>, <strong>Maybe</strong>, or <strong>I Don't Know</strong>. Maybe/IDK keep all candidates in play. The game covers 32 Disney characters across classic and modern films.</p>
                 </div>
             </div>
         </div>
@@ -81,77 +156,217 @@
 
     <script src="../js/theme-toggle.js"></script>
     <script>
-        // Simple guessing game with a basic decision tree
-        const questions = [
-            { q: 'Is your character from a movie?', yes: 1, no: 2 },
-            { q: 'Did they appear before 2000?', yes: 3, no: 4 },
-            { q: 'Are they from a sitcom?', yes: 5, no: 6 },
-            { q: 'Are they a main character?', yes: 7, no: 8 },
-            { q: 'Are they human?', yes: 9, no: 10 },
-            { q: 'Are they a villain?', yes: 11, no: 12 },
-            { q: 'Are they known for comedy?', yes: 13, no: 14 },
-            { q: 'Are they from an action movie?', yes: 15, no: 16 },
-            { q: 'Do they have superpowers?', yes: 17, no: 18 },
-            { q: 'Are they the protagonist?', yes: 19, no: 20 }
-        ];
+    // ─── Data ───────────────────────────────────────────────────────────────────
 
-        const guesses = [
-            'Sherlock Holmes',
-            'Spider-Man',
-            'Darth Vader',
-            'Elsa from Frozen',
-            'Michael Scott',
-            'Ross Geller',
-            'The Joker',
-            'Tony Stark',
-            'Harry Potter',
-            'Hermione Granger'
-        ];
+    // Question indices:
+    // 0  female?
+    // 1  villain?
+    // 2  animal/non-human?
+    // 3  magical powers?
+    // 4  princess/royalty?
+    // 5  has a love interest?
+    // 6  main protagonist?
+    // 7  sings in the movie?
+    // 8  Pixar film?
+    // 9  movie before 2000?
+    // 10 primarily comic relief?
+    // 11 goes on a journey away from home?
+    // 12 strong connection to water/ocean?
+    // 13 parent-child relationship central to story?
+    // 14 undergoes physical transformation?
+    // 15 love interest initially portrayed as scary/dangerous?
 
-        let currentQuestion = 0;
-        let questionCount = 0;
+    const QUESTIONS = [
+        "Is your character female?",
+        "Is your character a villain or antagonist?",
+        "Is your character an animal or non-human creature?",
+        "Does your character have magical or supernatural powers?",
+        "Is your character a princess, prince, or royalty?",
+        "Does your character have a romantic love interest?",
+        "Is your character the main hero or protagonist?",
+        "Does your character sing in their movie?",
+        "Is your character from a Pixar movie?",
+        "Is your character from a Disney movie made before the year 2000?",
+        "Is your character primarily known for being funny or comic relief?",
+        "Does your character leave home and go on an adventure?",
+        "Does your character have a strong connection to water or the ocean?",
+        "Is a parent-child relationship central to your character's story?",
+        "Does your character undergo a physical transformation at some point?",
+        "Is your character's love interest initially portrayed as scary or dangerous?"
+    ];
 
-        function answerQuestion(answer) {
-            questionCount++;
-            document.getElementById('questionCount').textContent = questionCount;
+    // attrs: [female, villain, nonhuman, magic, royalty, love, protagonist, sings, pixar, pre2000, funny, journey, water, parent, transforms, scary_love]
+    const CHARACTERS = [
+        { name:"Elsa",          movie:"Frozen",                wiki:"Elsa_(Frozen)",                     emoji:"❄️",  attrs:[1,0,0,1,1,0,1,1,0,0,0,1,0,0,0,0] },
+        { name:"Anna",          movie:"Frozen",                wiki:"Anna_(Frozen)",                     emoji:"🧣",  attrs:[1,0,0,0,1,1,1,1,0,0,1,1,0,0,0,0] },
+        { name:"Olaf",          movie:"Frozen",                wiki:"Olaf_(Disney_character)",           emoji:"⛄",  attrs:[0,0,1,0,0,0,0,1,0,0,1,1,0,0,0,0] },
+        { name:"Simba",         movie:"The Lion King",         wiki:"Simba",                             emoji:"🦁",  attrs:[0,0,1,0,1,1,1,1,0,1,0,1,0,1,0,0] },
+        { name:"Scar",          movie:"The Lion King",         wiki:"Scar_(The_Lion_King)",              emoji:"🦁",  attrs:[0,1,1,0,1,0,0,1,0,1,0,0,0,0,0,0] },
+        { name:"Nala",          movie:"The Lion King",         wiki:"Nala_(The_Lion_King)",              emoji:"🦁",  attrs:[1,0,1,0,0,1,0,1,0,1,0,1,0,0,0,0] },
+        { name:"Moana",         movie:"Moana",                 wiki:"Moana_(character)",                 emoji:"🌊",  attrs:[1,0,0,0,1,0,1,1,0,0,0,1,1,1,0,0] },
+        { name:"Maui",          movie:"Moana",                 wiki:"Maui_(Moana)",                      emoji:"🪝",  attrs:[0,0,0,1,0,0,0,1,0,0,1,1,1,0,1,0] },
+        { name:"Ariel",         movie:"The Little Mermaid",    wiki:"Ariel_(The_Little_Mermaid)",        emoji:"🧜",  attrs:[1,0,0,0,1,1,1,1,0,1,0,1,1,0,1,0] },
+        { name:"Ursula",        movie:"The Little Mermaid",    wiki:"Ursula_(The_Little_Mermaid)",       emoji:"🐙",  attrs:[1,1,0,1,0,0,0,1,0,1,0,0,1,0,0,0] },
+        { name:"Belle",         movie:"Beauty and the Beast",  wiki:"Belle_(Beauty_and_the_Beast)",      emoji:"📚",  attrs:[1,0,0,0,0,1,1,1,0,1,0,1,0,0,0,1] },
+        { name:"Beast",         movie:"Beauty and the Beast",  wiki:"Beast_(Beauty_and_the_Beast)",      emoji:"🌹",  attrs:[0,0,0,0,1,1,1,1,0,1,0,0,0,0,1,0] },
+        { name:"Gaston",        movie:"Beauty and the Beast",  wiki:"Gaston_(Beauty_and_the_Beast)",     emoji:"💪",  attrs:[0,1,0,0,0,1,0,1,0,1,1,0,0,0,0,0] },
+        { name:"Cinderella",    movie:"Cinderella",            wiki:"Cinderella_(character)",            emoji:"👠",  attrs:[1,0,0,0,1,1,1,1,0,1,0,1,0,0,1,0] },
+        { name:"Snow White",    movie:"Snow White",            wiki:"Snow_White_(Disney_character)",     emoji:"🍎",  attrs:[1,0,0,0,1,1,1,1,0,1,0,1,0,0,0,0] },
+        { name:"Rapunzel",      movie:"Tangled",               wiki:"Rapunzel_(Tangled)",                emoji:"💛",  attrs:[1,0,0,1,1,1,1,1,0,0,0,1,0,1,0,1] },
+        { name:"Aladdin",       movie:"Aladdin",               wiki:"Aladdin_(Disney_character)",        emoji:"🧞",  attrs:[0,0,0,0,0,1,1,1,0,1,0,1,0,0,0,0] },
+        { name:"Jasmine",       movie:"Aladdin",               wiki:"Jasmine_(Aladdin)",                 emoji:"🌙",  attrs:[1,0,0,0,1,1,0,1,0,1,0,1,0,0,0,0] },
+        { name:"Genie",         movie:"Aladdin",               wiki:"Genie_(Aladdin)",                   emoji:"🔵",  attrs:[0,0,1,1,0,0,0,1,0,1,1,1,0,0,1,0] },
+        { name:"Jafar",         movie:"Aladdin",               wiki:"Jafar_(Disney)",                    emoji:"🐍",  attrs:[0,1,0,1,1,0,0,0,0,1,0,0,0,0,1,0] },
+        { name:"Woody",         movie:"Toy Story",             wiki:"Woody_(Toy_Story)",                 emoji:"🤠",  attrs:[0,0,1,0,0,1,1,1,1,1,1,1,0,0,0,0] },
+        { name:"Buzz Lightyear",movie:"Toy Story",             wiki:"Buzz_Lightyear",                    emoji:"🚀",  attrs:[0,0,1,0,0,0,0,0,1,1,0,1,0,0,0,0] },
+        { name:"Mickey Mouse",  movie:"Various Disney",        wiki:"Mickey_Mouse",                      emoji:"🐭",  attrs:[0,0,1,0,0,1,1,1,0,1,1,1,0,0,0,0] },
+        { name:"Stitch",        movie:"Lilo & Stitch",         wiki:"Stitch_(Lilo_%26_Stitch)",          emoji:"👽",  attrs:[0,0,1,0,0,1,0,0,0,0,1,1,1,0,0,0] },
+        { name:"Lilo",          movie:"Lilo & Stitch",         wiki:"Lilo_(Lilo_%26_Stitch)",            emoji:"🌺",  attrs:[1,0,0,0,0,0,1,1,0,0,1,1,1,1,0,0] },
+        { name:"Mulan",         movie:"Mulan",                 wiki:"Fa_Mulan",                          emoji:"⚔️",  attrs:[1,0,0,0,0,1,1,1,0,1,0,1,0,1,0,0] },
+        { name:"Hercules",      movie:"Hercules",              wiki:"Hercules_(Disney_character)",       emoji:"⚡",  attrs:[0,0,0,1,1,1,1,1,0,1,0,1,0,1,0,0] },
+        { name:"Hades",         movie:"Hercules",              wiki:"Hades_(Disney)",                    emoji:"🔥",  attrs:[0,1,0,1,0,0,0,1,0,1,1,0,0,0,0,0] },
+        { name:"Merida",        movie:"Brave",                 wiki:"Merida_(Brave)",                    emoji:"🏹",  attrs:[1,0,0,0,1,0,1,1,0,0,0,1,0,1,1,0] },
+        { name:"Maleficent",    movie:"Sleeping Beauty",       wiki:"Maleficent_(character)",            emoji:"🦇",  attrs:[1,1,0,1,0,0,0,1,0,1,0,0,0,0,1,0] },
+        { name:"Dumbo",         movie:"Dumbo",                 wiki:"Dumbo_(character)",                 emoji:"🐘",  attrs:[0,0,1,0,0,0,1,0,0,1,0,0,0,1,1,0] },
+        { name:"Bambi",         movie:"Bambi",                 wiki:"Bambi_(character)",                 emoji:"🦌",  attrs:[0,0,1,0,0,0,1,0,0,1,0,1,0,1,0,0] }
+    ];
 
-            const nextQuestion = answer === 'yes' ? questions[currentQuestion].yes : questions[currentQuestion].no;
+    // ─── State ──────────────────────────────────────────────────────────────────
 
-            if (nextQuestion < questions.length) {
-                currentQuestion = nextQuestion;
-                displayQuestion();
-            } else {
-                makeGuess(guesses[nextQuestion - questions.length] || 'A mysterious character');
-            }
+    let remaining = [...CHARACTERS];
+    let askedQs   = [];
+    let currentQ  = -1;
+    let qCount    = 0;
+
+    // ─── Algorithm ──────────────────────────────────────────────────────────────
+
+    function pickBestQuestion() {
+        let best = -1, bestScore = -1;
+        for (let i = 0; i < QUESTIONS.length; i++) {
+            if (askedQs.includes(i)) continue;
+            const trueCount = remaining.filter(c => c.attrs[i] === 1).length;
+            const ratio = trueCount / remaining.length;
+            // Score = how close to a 50/50 split (1.0 = perfect, 0 = all same)
+            const score = 1 - Math.abs(0.5 - ratio) * 2;
+            if (score > bestScore) { bestScore = score; best = i; }
         }
+        return best;
+    }
 
-        function displayQuestion() {
-            if (currentQuestion < questions.length) {
-                const q = questions[currentQuestion];
-                document.getElementById('questionArea').innerHTML = `
-                    <p style="margin-bottom: var(--spacing-lg);"><strong>Question ${questionCount + 1}:</strong> ${q.q}</p>
-                    <div style="display: flex; gap: var(--spacing-md);">
-                        <button class="btn btn-primary" onclick="answerQuestion('yes')" style="flex: 1;">Yes</button>
-                        <button class="btn btn-secondary" onclick="answerQuestion('no')" style="flex: 1;">No</button>
-                    </div>
-                `;
-            }
+    // ─── Rendering ──────────────────────────────────────────────────────────────
+
+    function render() {
+        // Should we guess?
+        if (remaining.length === 0) { showStumped(); return; }
+        if (remaining.length === 1) { showGuess(remaining[0]); return; }
+        if (qCount >= 16)           { showGuess(remaining[0]); return; }
+
+        currentQ = pickBestQuestion();
+        if (currentQ === -1) { showGuess(remaining[0]); return; }
+
+        const progressPct = Math.min((qCount / 16) * 100, 95);
+        const poolText = remaining.length === CHARACTERS.length
+            ? `${CHARACTERS.length} characters in play`
+            : remaining.length <= 3
+                ? `Almost there — ${remaining.length} character${remaining.length > 1 ? 's' : ''} left`
+                : `Narrowing down — ${remaining.length} characters remaining`;
+
+        document.getElementById('gameContent').innerHTML = `
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:var(--spacing-lg);">
+                <span style="font-size:var(--text-sm); color:var(--color-neutral-500);">Question ${qCount + 1}</span>
+                <span class="pool-badge">${poolText}</span>
+            </div>
+            <div class="progress-bar-track" style="margin-bottom:var(--spacing-2xl);">
+                <div class="progress-bar-fill" style="width:${progressPct}%"></div>
+            </div>
+
+            <p class="question-text">${QUESTIONS[currentQ]}</p>
+
+            <div class="answer-grid">
+                <button class="answer-btn btn-yes"   onclick="answer('yes')">✅ Yes</button>
+                <button class="answer-btn btn-no"    onclick="answer('no')">❌ No</button>
+                <button class="answer-btn btn-maybe" onclick="answer('maybe')">🤔 Maybe</button>
+                <button class="answer-btn btn-idk"   onclick="answer('idk')">🤷 I Don't Know</button>
+            </div>
+
+            <p style="margin-top:var(--spacing-2xl); text-align:center;">
+                <button onclick="resetGame()" style="background:none; border:none; color:var(--color-neutral-500); font-size:var(--text-sm); cursor:pointer; font-family:inherit;">
+                    ↺ Start over
+                </button>
+            </p>
+        `;
+    }
+
+    function answer(choice) {
+        askedQs.push(currentQ);
+        qCount++;
+
+        if (choice === 'yes') {
+            remaining = remaining.filter(c => c.attrs[currentQ] === 1);
+        } else if (choice === 'no') {
+            remaining = remaining.filter(c => c.attrs[currentQ] === 0);
         }
+        // maybe / idk = no filtering
 
-        function makeGuess(character) {
-            document.getElementById('questionArea').innerHTML = `
-                <div style="text-align: center;">
-                    <p style="font-size: var(--text-xl); margin-bottom: var(--spacing-lg);"><strong>I think you're thinking of:</strong></p>
-                    <h2 style="margin-bottom: var(--spacing-xl); color: var(--color-accent);">${character}</h2>
-                    <div style="display: flex; gap: var(--spacing-md); justify-content: center;">
-                        <button class="btn btn-primary" onclick="location.reload()">Correct! Play Again</button>
-                        <button class="btn btn-secondary" onclick="location.reload()">Wrong, Try Again</button>
-                    </div>
+        render();
+    }
+
+    async function showGuess(character) {
+        document.getElementById('gameContent').innerHTML = `
+            <div class="character-reveal">
+                <p style="font-size:var(--text-sm); color:var(--color-neutral-500); margin-bottom:var(--spacing-lg);">
+                    ${qCount} question${qCount !== 1 ? 's' : ''} asked
+                </p>
+                <div class="image-placeholder" id="imgPlaceholder">${character.emoji}</div>
+                <h2 style="margin-bottom:var(--spacing-sm);">I think it's...</h2>
+                <h1 style="color:var(--color-accent); margin-bottom:var(--spacing-sm);">${character.name}</h1>
+                <p style="color:var(--color-neutral-600); margin-bottom:var(--spacing-2xl);">from <em>${character.movie}</em></p>
+                <div style="display:flex; gap:var(--spacing-md); justify-content:center; flex-wrap:wrap; margin-bottom:var(--spacing-xl);">
+                    <button class="btn btn-primary" onclick="resetGame()">🎉 Got it! Play Again</button>
+                    <button class="btn btn-secondary" onclick="resetGame()">😅 Wrong, Try Again</button>
                 </div>
-            `;
-        }
+            </div>
+        `;
+        loadImage(character);
+    }
 
-        displayQuestion();
+    async function loadImage(character) {
+        try {
+            const res  = await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(character.wiki)}`);
+            const data = await res.json();
+            const src  = data.thumbnail?.source;
+            const placeholder = document.getElementById('imgPlaceholder');
+            if (src && placeholder) {
+                placeholder.outerHTML = `<img src="${src}" alt="${character.name}" class="character-image">`;
+            }
+        } catch (e) {
+            // keep emoji placeholder on network error
+        }
+    }
+
+    function showStumped() {
+        document.getElementById('gameContent').innerHTML = `
+            <div class="character-reveal">
+                <div class="image-placeholder">🤯</div>
+                <h2 style="margin-bottom:var(--spacing-md);">You stumped me!</h2>
+                <p style="color:var(--color-neutral-600); margin-bottom:var(--spacing-2xl);">
+                    Your answers narrowed the pool to zero — either a very unique character or some tricky answers! Who were you thinking of?
+                </p>
+                <button class="btn btn-primary" onclick="resetGame()">Play Again</button>
+            </div>
+        `;
+    }
+
+    function resetGame() {
+        remaining = [...CHARACTERS];
+        askedQs   = [];
+        currentQ  = -1;
+        qCount    = 0;
+        render();
+    }
+
+    // ─── Start ───────────────────────────────────────────────────────────────────
+    render();
     </script>
 </body>
 </html>

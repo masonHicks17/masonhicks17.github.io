@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Heavy Lifting — Mason Hicks</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/dark-mode.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <span class="logo-text"><a href="/" style="color: var(--color-primary); text-decoration: none;">MH</a></span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="/#projects" class="nav-link">Back to Portfolio</a></li>
+            </ul>
+            <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="5"></circle>
+                    <line x1="12" y1="1" x2="12" y2="3"></line>
+                    <line x1="12" y1="21" x2="12" y2="23"></line>
+                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                    <line x1="1" y1="12" x2="3" y2="12"></line>
+                    <line x1="21" y1="12" x2="23" y2="12"></line>
+                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                </svg>
+            </button>
+        </div>
+    </nav>
+
+    <section class="section" style="padding-top: calc(70px + var(--spacing-3xl));">
+        <div class="container">
+            <a href="/#projects" class="btn btn-text" style="margin-bottom: var(--spacing-2xl);">← Back</a>
+
+            <div style="max-width: 800px;">
+                <!-- Hero Image -->
+                <div class="placeholder-image placeholder-2" style="width: 100%; height: 300px; margin-bottom: var(--spacing-3xl); border-radius: var(--radius-xl);"></div>
+
+                <h1>Heavy Lifting</h1>
+
+                <div style="display: flex; gap: var(--spacing-lg); margin-bottom: var(--spacing-xl); flex-wrap: wrap;">
+                    <span class="tag">React</span>
+                    <span class="tag">Vite</span>
+                    <span class="tag">Tailwind CSS</span>
+                    <span class="tag">IndexedDB</span>
+                    <span class="tag">Claude AI</span>
+                    <span class="tag">PWA</span>
+                </div>
+
+                <!-- CTAs - top -->
+                <div style="display: flex; gap: var(--spacing-md); flex-wrap: wrap; margin-bottom: var(--spacing-3xl);">
+                    <a href="https://heavylifting.netlify.app" target="_blank" rel="noopener noreferrer" class="btn btn-primary">Launch App</a>
+                    <a href="https://github.com/masonHicks17/gymtracker" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">View on GitHub</a>
+                </div>
+
+                <!-- Overview -->
+                <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-xl); padding: var(--spacing-2xl); margin-bottom: var(--spacing-2xl);">
+                    <h3>Overview</h3>
+                    <p>Heavy Lifting is a mobile-first Progressive Web App that plans, logs, and intelligently adapts your workouts over time. It combines a pure-logic workout generator (21 tested cases) with optional Claude AI enhancement—no account required, all data stored locally on your device.</p>
+                </div>
+
+                <!-- The Problem -->
+                <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-xl); padding: var(--spacing-2xl); margin-bottom: var(--spacing-2xl);">
+                    <h3>The Problem</h3>
+                    <p>Most gym tracking apps are either too simple (just a notepad) or too complex (subscription plans, synced accounts, overwhelming UX). I wanted something that actually tells you what to do next based on what you did last time—adapting to your performance without requiring any manual configuration or a monthly fee.</p>
+                </div>
+
+                <!-- The Solution -->
+                <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-xl); padding: var(--spacing-2xl); margin-bottom: var(--spacing-2xl);">
+                    <h3>The Solution</h3>
+                    <p>A three-layer weight recommendation engine: your last logged weight as a baseline, an ease modifier based on how you rated each set (easy/just-right/hard), and an optional Claude AI overlay capped at ±15% of the calculated value. The AI never overrides the data—it refines it. The app works fully offline via PWA with IndexedDB storage and can be installed directly to your phone's home screen.</p>
+                </div>
+
+                <!-- Key Features -->
+                <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-xl); padding: var(--spacing-2xl); margin-bottom: var(--spacing-2xl);">
+                    <h3>Key Features</h3>
+                    <ul style="margin-left: var(--spacing-lg); color: var(--color-neutral-600); line-height: 2;">
+                        <li>Smart workout generation — PPL, upper/lower, and full-body rotation with auto deload detection</li>
+                        <li>Set-by-set logging with rest timer, PR celebrations, and mid-session exercise swaps</li>
+                        <li>Progress charts (lift curve + volume) and all-time PR history via Recharts</li>
+                        <li>Gym & equipment manager — filter exercises to what's actually available at your gym</li>
+                        <li>XP system, levels, and streaks for habit-building gamification</li>
+                        <li>130+ exercise library across push, pull, legs, and core categories</li>
+                        <li>Installable PWA — works offline, no app store needed</li>
+                    </ul>
+                </div>
+
+                <!-- Technical Stack -->
+                <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-xl); padding: var(--spacing-2xl); margin-bottom: var(--spacing-2xl);">
+                    <h3>Technical Stack</h3>
+                    <p><strong>Frontend:</strong> React 18, Vite, Tailwind CSS v3, Recharts for data visualization</p>
+                    <p><strong>Storage:</strong> Dexie.js (IndexedDB wrapper) — fully client-side, no backend</p>
+                    <p><strong>AI:</strong> Anthropic Claude API (optional, user-supplied key) with deterministic fallback</p>
+                    <p><strong>Testing:</strong> Vitest — 21 unit tests covering workout generation, weight calc, and rotation logic</p>
+                    <p><strong>Deployment:</strong> Netlify + vite-plugin-pwa for service worker and offline caching</p>
+                </div>
+
+                <!-- What I Learned -->
+                <div style="background: var(--color-accent-light); border: 1px solid var(--color-border); border-radius: var(--radius-xl); padding: var(--spacing-2xl);">
+                    <h3>What I Learned</h3>
+                    <p>The most interesting design challenge was figuring out when to trust the AI vs. the data. The answer: always anchor to the data first and treat the AI as a bounded suggestion layer. This pattern—deterministic core with AI as an optional enhancement—made the app reliable enough to actually use daily while still feeling intelligent. I also learned that mobile performance is entirely different from desktop: the 100dvh bug, IndexedDB in private browsing, and input zoom on iOS all required specific fixes that only show up when you test on a real device.</p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 Mason Hicks. All rights reserved. Built with curiosity and care.</p>
+        </div>
+    </footer>
+
+    <script src="../js/theme-toggle.js"></script>
+    <script src="../js/animations.js"></script>
+    <script src="../js/main.js"></script>
+</body>
+</html>
