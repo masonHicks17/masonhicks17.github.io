@@ -3,103 +3,554 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Guess the Disney Character — Mason Hicks</title>
+    <title>Guess the Disney Character - Mason Hicks</title>
     <link rel="stylesheet" href="../css/styles.css">
     <link rel="stylesheet" href="../css/dark-mode.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
     <style>
-        .game-wrapper {
-            max-width: 680px;
+        body.guess-character-app {
+            --color-background: #121514;
+            --color-foreground: #f7f1e8;
+            --color-border: rgba(76, 154, 255, 0.22);
+            --color-surface: #1c211f;
+            --color-surface-alt: #141817;
+            --color-primary: #f7f1e8;
+            --color-secondary: #f6c45f;
+            --color-accent: #4b9cff;
+            --color-accent-strong: #7fbdff;
+            --color-accent-light: rgba(75, 156, 255, 0.13);
+            --color-accent-muted: rgba(75, 156, 255, 0.24);
+            --color-primary-light: rgba(247, 241, 232, 0.08);
+            --color-neutral-50: #202624;
+            --color-neutral-100: #1c211f;
+            --color-neutral-150: #252b28;
+            --color-neutral-200: rgba(76, 154, 255, 0.2);
+            --color-neutral-300: #737b76;
+            --color-neutral-400: #aeb6af;
+            --color-neutral-500: #cbc9c0;
+            --color-neutral-600: #e3ded4;
+            --shadow-sm: 0 20px 58px rgba(0, 0, 0, 0.22);
+            --shadow-md: 0 26px 76px rgba(0, 0, 0, 0.3);
+            --shadow-lg: 0 36px 96px rgba(0, 0, 0, 0.36);
+            background:
+                radial-gradient(circle at 14% 12%, rgba(75, 156, 255, 0.08), transparent 24rem),
+                radial-gradient(circle at 84% 18%, rgba(246, 196, 95, 0.1), transparent 26rem),
+                linear-gradient(180deg, #131715 0%, #0f1212 100%);
+        }
+
+        body.guess-character-app .navbar {
+            background: color-mix(in srgb, var(--color-background) 86%, transparent);
+            border-bottom-color: var(--color-border);
+        }
+
+        .game-shell {
+            max-width: 980px;
             margin: 0 auto;
         }
-        .answer-grid {
+
+        .game-hero {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: minmax(0, 1.1fr) minmax(280px, 0.9fr);
+            gap: var(--spacing-2xl);
+            align-items: end;
+            margin-bottom: var(--spacing-2xl);
+        }
+
+        .game-title {
+            margin-bottom: var(--spacing-md);
+        }
+
+        .game-subtitle {
+            max-width: 620px;
+            font-size: var(--text-lg);
+        }
+
+        .stat-strip {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
             gap: var(--spacing-md);
         }
-        .answer-btn {
-            padding: var(--spacing-lg) var(--spacing-xl);
-            border-radius: var(--radius-lg);
-            font-size: var(--text-base);
-            font-weight: 600;
-            cursor: pointer;
-            border: 2px solid transparent;
-            transition: all 0.15s ease;
-            font-family: inherit;
+
+        .stat-tile {
+            min-height: 94px;
+            padding: var(--spacing-lg);
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-xs);
         }
-        .answer-btn:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
-        .btn-yes    { background: #16a34a; color: #fff; border-color: #16a34a; }
-        .btn-yes:hover { background: #15803d; }
-        .btn-maybe  { background: #d97706; color: #fff; border-color: #d97706; }
-        .btn-maybe:hover { background: #b45309; }
-        .btn-no     { background: #dc2626; color: #fff; border-color: #dc2626; }
-        .btn-no:hover { background: #b91c1c; }
-        .btn-idk    { background: var(--color-surface); color: var(--color-neutral-600); border-color: var(--color-border); }
-        .btn-idk:hover { background: var(--color-neutral-100); }
-        .progress-bar-track {
-            width: 100%;
-            height: 6px;
-            background: var(--color-border);
-            border-radius: 99px;
-            overflow: hidden;
-        }
-        .progress-bar-fill {
-            height: 100%;
-            background: var(--color-accent);
-            border-radius: 99px;
-            transition: width 0.4s ease;
-        }
-        .character-reveal {
-            text-align: center;
-            animation: fadeIn 0.5s ease;
-        }
-        .character-image {
-            width: 200px;
-            height: 200px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 4px solid var(--color-accent);
-            margin: 0 auto var(--spacing-xl);
+
+        .stat-value {
             display: block;
-            background: var(--color-border);
+            font-size: var(--text-2xl);
+            font-weight: var(--font-weight-bold);
+            color: var(--color-foreground);
+            line-height: 1;
         }
-        .image-placeholder {
-            width: 200px;
-            height: 200px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
-            margin: 0 auto var(--spacing-xl);
+
+        .stat-label {
+            display: block;
+            margin-top: var(--spacing-sm);
+            color: var(--color-neutral-500);
+            font-size: var(--text-sm);
+        }
+
+        .game-board {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 300px;
+            gap: var(--spacing-xl);
+            align-items: start;
+        }
+
+        .game-card,
+        .side-panel,
+        .rules-panel {
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+            backdrop-filter: blur(18px);
+        }
+
+        .game-card {
+            min-height: 520px;
+            padding: clamp(1.25rem, 3vw, 2.5rem);
+            overflow: hidden;
+            scroll-margin-top: 96px;
+        }
+
+        .side-panel,
+        .rules-panel {
+            padding: var(--spacing-xl);
+        }
+
+        .side-panel {
+            position: sticky;
+            top: 96px;
+        }
+
+        .panel-title {
+            margin-bottom: var(--spacing-md);
+            font-family: var(--font-body);
+            font-size: var(--text-sm);
+            font-weight: var(--font-weight-bold);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--color-accent);
+        }
+
+        .setup-grid {
+            display: grid;
+            gap: var(--spacing-md);
+            margin: var(--spacing-2xl) 0;
+        }
+
+        .mode-btn {
+            width: 100%;
+            padding: var(--spacing-lg);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-md);
+            background: var(--color-background);
+            color: var(--color-foreground);
+            font: inherit;
+            text-align: left;
+            cursor: pointer;
+            transition: transform var(--transition-fast), border-color var(--transition-fast), background var(--transition-fast);
+        }
+
+        .game-mode-summary {
+            width: 100%;
+            padding: var(--spacing-lg);
+            border: 1px solid var(--color-accent);
+            border-radius: var(--radius-md);
+            background: var(--color-accent-light);
+            color: var(--color-foreground);
+        }
+
+        .mode-btn:hover,
+        .mode-btn.is-selected {
+            transform: translateY(-2px);
+            border-color: var(--color-accent);
+            background: var(--color-accent-light);
+        }
+
+        .mode-name {
+            display: block;
+            font-weight: var(--font-weight-bold);
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .mode-desc {
+            display: block;
+            color: var(--color-neutral-500);
+            font-size: var(--text-sm);
+        }
+
+        .question-header {
             display: flex;
+            justify-content: space-between;
+            gap: var(--spacing-md);
             align-items: center;
-            justify-content: center;
-            font-size: 4rem;
+            margin-bottom: var(--spacing-lg);
         }
+
+        .question-meta {
+            color: var(--color-neutral-500);
+            font-size: var(--text-sm);
+        }
+
         .pool-badge {
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            min-height: 32px;
             padding: var(--spacing-xs) var(--spacing-md);
             background: var(--color-accent-light);
             border: 1px solid var(--color-border);
-            border-radius: 99px;
-            font-size: var(--text-sm);
+            border-radius: 999px;
             color: var(--color-neutral-600);
+            font-size: var(--text-sm);
+            white-space: nowrap;
+        }
+
+        .progress-bar-track {
+            width: 100%;
+            height: 8px;
+            margin-bottom: var(--spacing-2xl);
+            background: var(--color-border);
+            border-radius: 999px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--color-accent), var(--color-secondary));
+            border-radius: 999px;
+            transition: width 0.35s ease;
+        }
+
+        .question-text {
+            min-height: 100px;
+            margin-bottom: var(--spacing-2xl);
+            font-family: var(--font-display);
+            font-size: clamp(1.75rem, 4vw, 3rem);
+            font-weight: var(--font-weight-bold);
+            line-height: var(--line-height-tight);
+            color: var(--color-foreground);
+        }
+
+        .answer-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: var(--spacing-md);
+        }
+
+        .answer-btn {
+            min-height: 78px;
+            padding: var(--spacing-lg);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-md);
+            color: var(--color-foreground);
+            background: var(--color-background);
+            font-family: inherit;
+            font-size: var(--text-base);
+            font-weight: var(--font-weight-bold);
+            cursor: pointer;
+            transition: transform var(--transition-fast), box-shadow var(--transition-fast), border-color var(--transition-fast);
+        }
+
+        .answer-btn:hover,
+        .answer-btn:focus-visible {
+            transform: translateY(-2px);
+            border-color: var(--color-accent);
+            box-shadow: var(--shadow-md);
+            outline: none;
+        }
+
+        .answer-yes { background: color-mix(in srgb, #228b5e 16%, var(--color-surface)); }
+        .answer-no { background: color-mix(in srgb, #ae3a3a 14%, var(--color-surface)); }
+        .answer-maybe { background: rgba(167, 142, 106, 0.16); }
+        .answer-idk { background: var(--color-surface-alt); }
+
+        .tool-row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: var(--spacing-md);
+            margin-top: var(--spacing-2xl);
+        }
+
+        .ghost-btn {
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-md);
+            background: transparent;
+            color: var(--color-neutral-600);
+            cursor: pointer;
+            font: inherit;
+            font-size: var(--text-sm);
+            padding: var(--spacing-sm) var(--spacing-md);
+        }
+
+        .ghost-btn:disabled {
+            opacity: 0.45;
+            cursor: not-allowed;
+        }
+
+        .candidate-list,
+        .history-list,
+        .hint-list {
+            display: grid;
+            gap: var(--spacing-sm);
+            list-style: none;
+        }
+
+        .candidate-row {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: var(--spacing-sm);
+            align-items: center;
+            padding: var(--spacing-sm) 0;
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .candidate-row:last-child {
+            border-bottom: 0;
+        }
+
+        .candidate-name {
+            font-weight: var(--font-weight-semibold);
+            color: var(--color-foreground);
+        }
+
+        .candidate-movie,
+        .history-list,
+        .hint-list {
+            color: var(--color-neutral-500);
+            font-size: var(--text-sm);
+        }
+
+        .confidence {
+            font-variant-numeric: tabular-nums;
+            color: var(--color-accent);
+            font-weight: var(--font-weight-bold);
+        }
+
+        .history-item {
+            padding-bottom: var(--spacing-sm);
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .history-item:last-child {
+            border-bottom: 0;
+        }
+
+        .game-reveal {
+            text-align: center;
+            animation: fadeIn 0.45s ease;
+        }
+
+        .portrait-wrap {
+            position: relative;
+            width: 210px;
+            height: 210px;
+            margin: 0 auto var(--spacing-xl);
+        }
+
+        .character-image,
+        .image-placeholder {
+            width: 210px;
+            height: 210px;
+            border-radius: 50%;
+            border: 4px solid var(--color-accent);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .character-image {
+            display: block;
+            object-fit: cover;
+            background: var(--color-border);
+        }
+
+        .image-placeholder {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background:
+                radial-gradient(circle at 30% 25%, rgba(255, 255, 255, 0.3), transparent 32%),
+                linear-gradient(135deg, var(--color-accent), var(--color-secondary));
+            font-size: 5rem;
+        }
+
+        .result-kicker {
+            margin-bottom: var(--spacing-sm);
+            color: var(--color-neutral-500);
+            font-size: var(--text-sm);
+        }
+
+        .result-name {
+            margin-bottom: var(--spacing-sm);
+            color: var(--color-accent);
+        }
+
+        .result-detail {
+            margin-bottom: var(--spacing-xl);
+            color: var(--color-neutral-600);
+        }
+
+        .match-meter {
+            max-width: 360px;
+            margin: 0 auto var(--spacing-xl);
+            text-align: left;
+        }
+
+        .match-meter-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: var(--spacing-xs);
+            color: var(--color-neutral-600);
+            font-size: var(--text-sm);
+            font-weight: var(--font-weight-semibold);
+        }
+
+        .alternatives {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: var(--spacing-sm);
             margin-bottom: var(--spacing-xl);
         }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(16px); }
-            to   { opacity: 1; transform: translateY(0); }
+
+        .alt-pill {
+            padding: var(--spacing-xs) var(--spacing-md);
+            border: 1px solid var(--color-border);
+            border-radius: 999px;
+            color: var(--color-neutral-600);
+            background: var(--color-background);
+            font-size: var(--text-sm);
         }
-        .question-text {
-            font-size: var(--text-xl);
-            font-weight: 600;
-            line-height: 1.4;
-            margin-bottom: var(--spacing-2xl);
-            min-height: 60px;
+
+        body.guess-character-app .game-title,
+        body.guess-character-app .question-text,
+        body.guess-character-app .result-name {
+            letter-spacing: -0.02em;
+        }
+
+        body.guess-character-app .game-card,
+        body.guess-character-app .side-panel,
+        body.guess-character-app .rules-panel,
+        body.guess-character-app .stat-tile {
+            background: rgba(28, 33, 31, 0.88);
+            border-color: rgba(75, 156, 255, 0.2);
+        }
+
+        body.guess-character-app .mode-btn,
+        body.guess-character-app .game-mode-summary,
+        body.guess-character-app .answer-btn,
+        body.guess-character-app .alt-pill {
+            background: rgba(20, 24, 23, 0.76);
+        }
+
+        body.guess-character-app .mode-btn:hover,
+        body.guess-character-app .mode-btn.is-selected,
+        body.guess-character-app .game-mode-summary,
+        body.guess-character-app .pool-badge {
+            background: rgba(75, 156, 255, 0.13);
+        }
+
+        body.guess-character-app .btn-primary {
+            background: #1f7ae0;
+            border-color: #66b2ff;
+            color: #f8fbff;
+            box-shadow: 0 18px 46px rgba(31, 122, 224, 0.28);
+        }
+
+        body.guess-character-app .btn-primary:hover {
+            background: #2d8cff;
+            border-color: #9cccff;
+            color: #ffffff;
+        }
+
+        body.guess-character-app .answer-yes {
+            background: rgba(47, 104, 82, 0.22);
+        }
+
+        body.guess-character-app .answer-no {
+            background: rgba(111, 64, 58, 0.2);
+        }
+
+        body.guess-character-app .answer-maybe {
+            background: rgba(208, 167, 104, 0.14);
+        }
+
+        body.guess-character-app .answer-idk {
+            background: rgba(18, 22, 21, 0.72);
+        }
+
+        .rules-panel {
+            margin-top: var(--spacing-xl);
+        }
+
+        .rules-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--spacing-lg);
+        }
+
+        .rules-grid h3 {
+            margin-bottom: var(--spacing-sm);
+            font-family: var(--font-body);
+            font-size: var(--text-base);
+        }
+
+        .rules-grid p {
+            margin-bottom: 0;
+            font-size: var(--text-sm);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(14px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 860px) {
+            .game-hero,
+            .game-board {
+                grid-template-columns: 1fr;
+            }
+
+            .side-panel {
+                position: static;
+            }
+
+            .stat-strip,
+            .rules-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 560px) {
+            .answer-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .question-header {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .pool-badge {
+                white-space: normal;
+            }
+
+            .game-card {
+                min-height: auto;
+            }
         }
     </style>
 </head>
-<body>
+<body class="guess-character-app">
     <nav class="navbar">
         <div class="nav-container">
             <div class="nav-logo">
@@ -124,25 +575,61 @@
         </div>
     </nav>
 
-    <section class="section" style="padding-top: calc(70px + var(--spacing-3xl));">
+    <section class="section" style="padding-top: calc(72px + var(--spacing-3xl));">
         <div class="container">
-            <a href="/#games" class="btn btn-text" style="margin-bottom: var(--spacing-2xl);">← Back</a>
+            <a href="/#games" class="btn btn-text" style="margin-bottom: var(--spacing-2xl);">Back</a>
 
-            <div class="game-wrapper">
-                <h1 style="margin-bottom: var(--spacing-md);">Guess the Disney Character ✨</h1>
-                <p style="margin-bottom: var(--spacing-3xl); color: var(--color-neutral-600);">
-                    Think of any Disney character. I'll ask you yes/no questions and try to figure out who it is.
-                </p>
-
-                <!-- Game Card -->
-                <div id="gameCard" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-xl); padding: var(--spacing-3xl); margin-bottom: var(--spacing-2xl);">
-                    <div id="gameContent"></div>
+            <div class="game-shell">
+                <div class="game-hero">
+                    <div>
+                        <span class="section-eyebrow">Mini Game</span>
+                        <h1 class="game-title">Guess the Disney Character</h1>
+                        <p class="game-subtitle">
+                            Think of a character, answer the clues, and the game will rank its best guess in real time.
+                        </p>
+                    </div>
+                    <div class="stat-strip" aria-label="Game stats">
+                        <div class="stat-tile">
+                            <span class="stat-value" id="heroCharacterCount">48</span>
+                            <span class="stat-label">characters</span>
+                        </div>
+                        <div class="stat-tile">
+                            <span class="stat-value" id="heroQuestionCount">24</span>
+                            <span class="stat-label">clues</span>
+                        </div>
+                        <div class="stat-tile">
+                            <span class="stat-value">10</span>
+                            <span class="stat-label">avg guesses</span>
+                        </div>
+                    </div>
                 </div>
 
-                <!-- About -->
-                <div style="background: var(--color-accent-light); border: 1px solid var(--color-border); border-radius: var(--radius-xl); padding: var(--spacing-2xl);">
-                    <h3>How It Works</h3>
-                    <p>The game uses an information-gain algorithm — each question is chosen to split the remaining candidates as evenly as possible, similar to a binary search. Answer <strong>Yes</strong>, <strong>No</strong>, <strong>Maybe</strong>, or <strong>I Don't Know</strong>. Maybe/IDK keep all candidates in play. The game covers 32 Disney characters across classic and modern films.</p>
+                <div class="game-board">
+                    <main class="game-card" id="gameCard" aria-live="polite">
+                        <div id="gameContent"></div>
+                    </main>
+
+                    <aside class="side-panel" aria-label="Game helper panel">
+                        <h2 class="panel-title">Live Read</h2>
+                        <div id="sideContent"></div>
+                    </aside>
+                </div>
+
+                <div class="rules-panel">
+                    <div class="rules-grid">
+                        <div>
+                            <h3>How it decides</h3>
+                            <p>Each answer adjusts every character's score. The next clue is picked to split the strongest remaining candidates.</p>
+                        </div>
+                        <div>
+                            <h3>Answer nuance</h3>
+                            <p>Yes and No are strong signals. Maybe is soft evidence. I don't know skips the clue without penalty.</p>
+                        </div>
+                        <div>
+                            <h3>Keyboard play</h3>
+                            <p>Use Y for yes, N for no, M for maybe, I for I don't know, U to undo, and R to restart.</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -156,216 +643,442 @@
 
     <script src="../js/theme-toggle.js"></script>
     <script>
-    // ─── Data ───────────────────────────────────────────────────────────────────
-
-    // Question indices:
-    // 0  female?
-    // 1  villain?
-    // 2  animal/non-human?
-    // 3  magical powers?
-    // 4  princess/royalty?
-    // 5  has a love interest?
-    // 6  main protagonist?
-    // 7  sings in the movie?
-    // 8  Pixar film?
-    // 9  movie before 2000?
-    // 10 primarily comic relief?
-    // 11 goes on a journey away from home?
-    // 12 strong connection to water/ocean?
-    // 13 parent-child relationship central to story?
-    // 14 undergoes physical transformation?
-    // 15 love interest initially portrayed as scary/dangerous?
-
     const QUESTIONS = [
-        "Is your character female?",
-        "Is your character a villain or antagonist?",
-        "Is your character an animal or non-human creature?",
-        "Does your character have magical or supernatural powers?",
-        "Is your character a princess, prince, or royalty?",
-        "Does your character have a romantic love interest?",
-        "Is your character the main hero or protagonist?",
-        "Does your character sing in their movie?",
-        "Is your character from a Pixar movie?",
-        "Is your character from a Disney movie made before the year 2000?",
-        "Is your character primarily known for being funny or comic relief?",
-        "Does your character leave home and go on an adventure?",
-        "Does your character have a strong connection to water or the ocean?",
-        "Is a parent-child relationship central to your character's story?",
-        "Does your character undergo a physical transformation at some point?",
-        "Is your character's love interest initially portrayed as scary or dangerous?"
+        { key: 'female', text: 'Is your character female?' },
+        { key: 'villain', text: 'Is your character a villain or main antagonist?' },
+        { key: 'nonhuman', text: 'Is your character an animal, toy, monster, or other non-human being?' },
+        { key: 'magic', text: 'Does your character use magic or supernatural power?' },
+        { key: 'royalty', text: 'Is your character royal or strongly connected to royalty?' },
+        { key: 'love', text: 'Does your character have a romantic storyline?' },
+        { key: 'protagonist', text: 'Is your character the main hero of their story?' },
+        { key: 'sings', text: 'Does your character sing or perform a major musical number?' },
+        { key: 'pixar', text: 'Is your character from a Pixar movie?' },
+        { key: 'pre2000', text: 'Did your character debut before the year 2000?' },
+        { key: 'funny', text: 'Is your character often used for comic relief?' },
+        { key: 'journey', text: 'Does your character leave home or cross a big distance during the story?' },
+        { key: 'water', text: 'Is water, the ocean, ice, or sailing central to your character?' },
+        { key: 'family', text: 'Is family a central motivation for your character?' },
+        { key: 'transforms', text: 'Does your character physically transform or disguise themself?' },
+        { key: 'scary', text: 'Is your character first presented as scary, dangerous, or intimidating?' },
+        { key: 'sidekick', text: 'Is your character mostly a sidekick or supporting companion?' },
+        { key: 'child', text: 'Is your character a child or teenager for most of the story?' },
+        { key: 'mentor', text: 'Does your character act as a mentor, guardian, or guide?' },
+        { key: 'royalGoal', text: 'Does your character want power, a crown, or control of a kingdom?' },
+        { key: 'animalFriend', text: 'Does your character have an important animal friend?' },
+        { key: 'modern', text: 'Did your character debut in 2010 or later?' },
+        { key: 'object', text: 'Is your character an enchanted object, toy, robot, or living item?' },
+        { key: 'combat', text: 'Is fighting, training, or physical bravery a major part of their story?' }
     ];
 
-    // attrs: [female, villain, nonhuman, magic, royalty, love, protagonist, sings, pixar, pre2000, funny, journey, water, parent, transforms, scary_love]
     const CHARACTERS = [
-        { name:"Elsa",          movie:"Frozen",                wiki:"Elsa_(Frozen)",                     emoji:"❄️",  attrs:[1,0,0,1,1,0,1,1,0,0,0,1,0,0,0,0] },
-        { name:"Anna",          movie:"Frozen",                wiki:"Anna_(Frozen)",                     emoji:"🧣",  attrs:[1,0,0,0,1,1,1,1,0,0,1,1,0,0,0,0] },
-        { name:"Olaf",          movie:"Frozen",                wiki:"Olaf_(Disney_character)",           emoji:"⛄",  attrs:[0,0,1,0,0,0,0,1,0,0,1,1,0,0,0,0] },
-        { name:"Simba",         movie:"The Lion King",         wiki:"Simba",                             emoji:"🦁",  attrs:[0,0,1,0,1,1,1,1,0,1,0,1,0,1,0,0] },
-        { name:"Scar",          movie:"The Lion King",         wiki:"Scar_(The_Lion_King)",              emoji:"🦁",  attrs:[0,1,1,0,1,0,0,1,0,1,0,0,0,0,0,0] },
-        { name:"Nala",          movie:"The Lion King",         wiki:"Nala_(The_Lion_King)",              emoji:"🦁",  attrs:[1,0,1,0,0,1,0,1,0,1,0,1,0,0,0,0] },
-        { name:"Moana",         movie:"Moana",                 wiki:"Moana_(character)",                 emoji:"🌊",  attrs:[1,0,0,0,1,0,1,1,0,0,0,1,1,1,0,0] },
-        { name:"Maui",          movie:"Moana",                 wiki:"Maui_(Moana)",                      emoji:"🪝",  attrs:[0,0,0,1,0,0,0,1,0,0,1,1,1,0,1,0] },
-        { name:"Ariel",         movie:"The Little Mermaid",    wiki:"Ariel_(The_Little_Mermaid)",        emoji:"🧜",  attrs:[1,0,0,0,1,1,1,1,0,1,0,1,1,0,1,0] },
-        { name:"Ursula",        movie:"The Little Mermaid",    wiki:"Ursula_(The_Little_Mermaid)",       emoji:"🐙",  attrs:[1,1,0,1,0,0,0,1,0,1,0,0,1,0,0,0] },
-        { name:"Belle",         movie:"Beauty and the Beast",  wiki:"Belle_(Beauty_and_the_Beast)",      emoji:"📚",  attrs:[1,0,0,0,0,1,1,1,0,1,0,1,0,0,0,1] },
-        { name:"Beast",         movie:"Beauty and the Beast",  wiki:"Beast_(Beauty_and_the_Beast)",      emoji:"🌹",  attrs:[0,0,0,0,1,1,1,1,0,1,0,0,0,0,1,0] },
-        { name:"Gaston",        movie:"Beauty and the Beast",  wiki:"Gaston_(Beauty_and_the_Beast)",     emoji:"💪",  attrs:[0,1,0,0,0,1,0,1,0,1,1,0,0,0,0,0] },
-        { name:"Cinderella",    movie:"Cinderella",            wiki:"Cinderella_(character)",            emoji:"👠",  attrs:[1,0,0,0,1,1,1,1,0,1,0,1,0,0,1,0] },
-        { name:"Snow White",    movie:"Snow White",            wiki:"Snow_White_(Disney_character)",     emoji:"🍎",  attrs:[1,0,0,0,1,1,1,1,0,1,0,1,0,0,0,0] },
-        { name:"Rapunzel",      movie:"Tangled",               wiki:"Rapunzel_(Tangled)",                emoji:"💛",  attrs:[1,0,0,1,1,1,1,1,0,0,0,1,0,1,0,1] },
-        { name:"Aladdin",       movie:"Aladdin",               wiki:"Aladdin_(Disney_character)",        emoji:"🧞",  attrs:[0,0,0,0,0,1,1,1,0,1,0,1,0,0,0,0] },
-        { name:"Jasmine",       movie:"Aladdin",               wiki:"Jasmine_(Aladdin)",                 emoji:"🌙",  attrs:[1,0,0,0,1,1,0,1,0,1,0,1,0,0,0,0] },
-        { name:"Genie",         movie:"Aladdin",               wiki:"Genie_(Aladdin)",                   emoji:"🔵",  attrs:[0,0,1,1,0,0,0,1,0,1,1,1,0,0,1,0] },
-        { name:"Jafar",         movie:"Aladdin",               wiki:"Jafar_(Disney)",                    emoji:"🐍",  attrs:[0,1,0,1,1,0,0,0,0,1,0,0,0,0,1,0] },
-        { name:"Woody",         movie:"Toy Story",             wiki:"Woody_(Toy_Story)",                 emoji:"🤠",  attrs:[0,0,1,0,0,1,1,1,1,1,1,1,0,0,0,0] },
-        { name:"Buzz Lightyear",movie:"Toy Story",             wiki:"Buzz_Lightyear",                    emoji:"🚀",  attrs:[0,0,1,0,0,0,0,0,1,1,0,1,0,0,0,0] },
-        { name:"Mickey Mouse",  movie:"Various Disney",        wiki:"Mickey_Mouse",                      emoji:"🐭",  attrs:[0,0,1,0,0,1,1,1,0,1,1,1,0,0,0,0] },
-        { name:"Stitch",        movie:"Lilo & Stitch",         wiki:"Stitch_(Lilo_%26_Stitch)",          emoji:"👽",  attrs:[0,0,1,0,0,1,0,0,0,0,1,1,1,0,0,0] },
-        { name:"Lilo",          movie:"Lilo & Stitch",         wiki:"Lilo_(Lilo_%26_Stitch)",            emoji:"🌺",  attrs:[1,0,0,0,0,0,1,1,0,0,1,1,1,1,0,0] },
-        { name:"Mulan",         movie:"Mulan",                 wiki:"Fa_Mulan",                          emoji:"⚔️",  attrs:[1,0,0,0,0,1,1,1,0,1,0,1,0,1,0,0] },
-        { name:"Hercules",      movie:"Hercules",              wiki:"Hercules_(Disney_character)",       emoji:"⚡",  attrs:[0,0,0,1,1,1,1,1,0,1,0,1,0,1,0,0] },
-        { name:"Hades",         movie:"Hercules",              wiki:"Hades_(Disney)",                    emoji:"🔥",  attrs:[0,1,0,1,0,0,0,1,0,1,1,0,0,0,0,0] },
-        { name:"Merida",        movie:"Brave",                 wiki:"Merida_(Brave)",                    emoji:"🏹",  attrs:[1,0,0,0,1,0,1,1,0,0,0,1,0,1,1,0] },
-        { name:"Maleficent",    movie:"Sleeping Beauty",       wiki:"Maleficent_(character)",            emoji:"🦇",  attrs:[1,1,0,1,0,0,0,1,0,1,0,0,0,0,1,0] },
-        { name:"Dumbo",         movie:"Dumbo",                 wiki:"Dumbo_(character)",                 emoji:"🐘",  attrs:[0,0,1,0,0,0,1,0,0,1,0,0,0,1,1,0] },
-        { name:"Bambi",         movie:"Bambi",                 wiki:"Bambi_(character)",                 emoji:"🦌",  attrs:[0,0,1,0,0,0,1,0,0,1,0,1,0,1,0,0] }
+        c('Elsa', 'Frozen', 'Elsa_(Frozen)', 'ice queen', { female:1, magic:1, royalty:1, protagonist:1, sings:1, water:1, family:1, modern:1, scary:1 }),
+        c('Anna', 'Frozen', 'Anna_(Frozen)', 'optimistic princess', { female:1, royalty:1, love:1, protagonist:1, sings:1, journey:1, family:1, modern:1 }),
+        c('Olaf', 'Frozen', 'Olaf_(Disney_character)', 'summer-loving snowman', { nonhuman:1, magic:1, sings:1, funny:1, sidekick:1, modern:1, object:1 }),
+        c('Kristoff', 'Frozen', 'Kristoff_(Frozen)', 'mountain ice harvester', { love:1, sings:1, journey:1, sidekick:1, modern:1, animalFriend:1 }),
+        c('Moana', 'Moana', 'Moana_(character)', 'wayfinding chief', { female:1, royalty:1, protagonist:1, sings:1, journey:1, water:1, family:1, animalFriend:1, modern:1 }),
+        c('Maui', 'Moana', 'Maui_(Moana)', 'shape-shifting demigod', { magic:1, sings:1, funny:1, journey:1, water:1, transforms:1, sidekick:1, modern:1, combat:1 }),
+        c('Ariel', 'The Little Mermaid', 'Ariel_(The_Little_Mermaid)', 'curious mermaid', { female:1, nonhuman:1, royalty:1, love:1, protagonist:1, sings:1, pre2000:1, journey:1, water:1, transforms:1, animalFriend:1 }),
+        c('Ursula', 'The Little Mermaid', 'Ursula_(The_Little_Mermaid)', 'sea witch', { female:1, villain:1, nonhuman:1, magic:1, sings:1, pre2000:1, water:1, transforms:1, scary:1, royalGoal:1 }),
+        c('Belle', 'Beauty and the Beast', 'Belle_(Beauty_and_the_Beast)', 'book-loving dreamer', { female:1, love:1, protagonist:1, sings:1, pre2000:1, journey:1, family:1, scary:1 }),
+        c('Beast', 'Beauty and the Beast', 'Beast_(Beauty_and_the_Beast)', 'cursed prince', { nonhuman:1, magic:1, royalty:1, love:1, protagonist:1, sings:1, pre2000:1, transforms:1, scary:1 }),
+        c('Gaston', 'Beauty and the Beast', 'Gaston_(Beauty_and_the_Beast)', 'boastful hunter', { villain:1, love:1, sings:1, pre2000:1, funny:1, scary:1, combat:1 }),
+        c('Cinderella', 'Cinderella', 'Cinderella_(Disney_character)', 'glass-slipper dreamer', { female:1, magic:1, royalty:1, love:1, protagonist:1, sings:1, pre2000:1, transforms:1, animalFriend:1 }),
+        c('Snow White', 'Snow White and the Seven Dwarfs', 'Snow_White_(Disney_character)', 'gentle princess', { female:1, royalty:1, love:1, protagonist:1, sings:1, pre2000:1, journey:1, animalFriend:1 }),
+        c('Rapunzel', 'Tangled', 'Rapunzel_(Tangled)', 'lost princess', { female:1, magic:1, royalty:1, love:1, protagonist:1, sings:1, journey:1, family:1, modern:1, animalFriend:1 }),
+        c('Flynn Rider', 'Tangled', 'Flynn_Rider', 'charming thief', { love:1, funny:1, journey:1, sidekick:1, modern:1 }),
+        c('Aladdin', 'Aladdin', 'Aladdin_(Disney_character)', 'street-smart dreamer', { love:1, protagonist:1, sings:1, pre2000:1, journey:1, transforms:1, animalFriend:1 }),
+        c('Jasmine', 'Aladdin', 'Jasmine_(Aladdin)', 'independent princess', { female:1, royalty:1, love:1, sings:1, pre2000:1, journey:1, animalFriend:1 }),
+        c('Genie', 'Aladdin', 'Genie_(Aladdin)', 'wish-granting performer', { nonhuman:1, magic:1, sings:1, pre2000:1, funny:1, transforms:1, sidekick:1 }),
+        c('Jafar', 'Aladdin', 'Jafar_(Disney)', 'power-hungry sorcerer', { villain:1, magic:1, sings:1, pre2000:1, transforms:1, scary:1, royalGoal:1 }),
+        c('Mulan', 'Mulan', 'Fa_Mulan', 'brave warrior', { female:1, love:1, protagonist:1, sings:1, pre2000:1, journey:1, family:1, transforms:1, animalFriend:1, combat:1 }),
+        c('Mushu', 'Mulan', 'Mushu', 'tiny guardian dragon', { nonhuman:1, magic:1, pre2000:1, funny:1, journey:1, sidekick:1, mentor:1 }),
+        c('Simba', 'The Lion King', 'Simba', 'exiled lion king', { nonhuman:1, royalty:1, love:1, protagonist:1, sings:1, pre2000:1, journey:1, family:1, child:1 }),
+        c('Scar', 'The Lion King', 'Scar_(The_Lion_King)', 'scheming lion', { villain:1, nonhuman:1, royalty:1, sings:1, pre2000:1, scary:1, royalGoal:1 }),
+        c('Nala', 'The Lion King', 'Nala_(The_Lion_King)', 'determined lioness', { female:1, nonhuman:1, love:1, sings:1, pre2000:1, journey:1, family:1 }),
+        c('Timon', 'The Lion King', 'Timon_and_Pumbaa', 'fast-talking meerkat', { nonhuman:1, sings:1, pre2000:1, funny:1, sidekick:1, mentor:1 }),
+        c('Hercules', 'Hercules', 'Hercules_(Disney_character)', 'hero in training', { magic:1, royalty:1, love:1, protagonist:1, sings:1, pre2000:1, journey:1, family:1, combat:1 }),
+        c('Megara', 'Hercules', 'Megara_(Disney_character)', 'sharp-witted heroine', { female:1, love:1, sings:1, pre2000:1, scary:1 }),
+        c('Hades', 'Hercules', 'Hades_(Disney)', 'lord of the underworld', { villain:1, magic:1, sings:1, pre2000:1, funny:1, scary:1, royalGoal:1 }),
+        c('Maleficent', 'Sleeping Beauty', 'Maleficent', 'dark fairy', { female:1, villain:1, magic:1, sings:0, pre2000:1, transforms:1, scary:1, royalGoal:1 }),
+        c('Peter Pan', 'Peter Pan', 'Peter_Pan_(Disney_character)', 'boy who never grows up', { magic:1, protagonist:1, sings:1, pre2000:1, journey:1, child:1, animalFriend:1, combat:1 }),
+        c('Tinker Bell', 'Peter Pan', 'Tinker_Bell_(Disney_character)', 'fiery fairy', { female:1, nonhuman:1, magic:1, pre2000:1, funny:1, sidekick:1 }),
+        c('Stitch', 'Lilo & Stitch', 'Stitch_(Lilo_%26_Stitch)', 'chaotic alien experiment', { nonhuman:1, funny:1, journey:1, water:1, family:1, sidekick:1, scary:1 }),
+        c('Lilo', 'Lilo & Stitch', 'Lilo_Pelekai', 'creative Hawaiian kid', { female:1, protagonist:1, journey:1, water:1, family:1, child:1 }),
+        c('Merida', 'Brave', 'Merida_(Brave)', 'archer princess', { female:1, magic:1, royalty:1, protagonist:1, journey:1, family:1, transforms:1, modern:1, combat:1 }),
+        c('Mirabel', 'Encanto', 'Mirabel_Madrigal', 'giftless Madrigal', { female:1, protagonist:1, sings:1, family:1, modern:1 }),
+        c('Bruno', 'Encanto', 'Bruno_Madrigal', 'misunderstood seer', { magic:1, sings:1, family:1, modern:1, funny:1, scary:1 }),
+        c('Woody', 'Toy Story', 'Woody_(Toy_Story)', 'loyal cowboy toy', { nonhuman:1, love:1, protagonist:1, sings:1, pixar:1, pre2000:1, funny:1, journey:1, object:1 }),
+        c('Buzz Lightyear', 'Toy Story', 'Buzz_Lightyear', 'space ranger toy', { nonhuman:1, pixar:1, pre2000:1, funny:1, journey:1, sidekick:1, object:1, combat:1 }),
+        c('Jessie', 'Toy Story 2', 'Jessie_(Toy_Story)', 'yodeling cowgirl toy', { female:1, nonhuman:1, sings:1, pixar:1, pre2000:1, funny:1, object:1 }),
+        c('Sully', 'Monsters, Inc.', 'James_P._Sullivan', 'gentle scarer', { nonhuman:1, pixar:1, funny:1, family:1, scary:1 }),
+        c('Mike Wazowski', 'Monsters, Inc.', 'Mike_Wazowski', 'one-eyed best friend', { nonhuman:1, pixar:1, funny:1, sidekick:1, scary:1 }),
+        c('Dory', 'Finding Nemo', 'Dory_(Finding_Nemo)', 'forgetful blue tang', { female:1, nonhuman:1, pixar:1, funny:1, journey:1, water:1, sidekick:1 }),
+        c('Nemo', 'Finding Nemo', 'Nemo_(Finding_Nemo)', 'adventurous clownfish', { nonhuman:1, pixar:1, journey:1, water:1, family:1, child:1 }),
+        c('Marlin', 'Finding Nemo', 'Marlin_(Finding_Nemo)', 'protective father', { nonhuman:1, pixar:1, journey:1, water:1, family:1, protagonist:1 }),
+        c('Remy', 'Ratatouille', 'Remy_(Ratatouille)', 'chef rat', { nonhuman:1, pixar:1, funny:1, journey:1, protagonist:1 }),
+        c('WALL-E', 'WALL-E', 'WALL-E_(character)', 'lonely cleanup robot', { nonhuman:1, love:1, protagonist:1, pixar:1, journey:1, object:1 }),
+        c('Miguel', 'Coco', 'Miguel_Rivera_(Coco)', 'music-loving kid', { protagonist:1, sings:1, pixar:1, journey:1, family:1, child:1, modern:1 }),
+        c('Raya', 'Raya and the Last Dragon', 'Raya_(Raya_and_the_Last_Dragon)', 'trust-seeking warrior', { female:1, royalty:1, protagonist:1, journey:1, family:1, modern:1, animalFriend:1, combat:1 })
     ];
 
-    // ─── State ──────────────────────────────────────────────────────────────────
+    const GAME_CONFIG = {
+        maxQuestions: 16,
+        threshold: 2.65
+    };
 
-    let remaining = [...CHARACTERS];
-    let askedQs   = [];
-    let currentQ  = -1;
-    let qCount    = 0;
+    const CHOICE_LABELS = {
+        yes: 'Yes',
+        no: 'No',
+        maybe: 'Maybe',
+        idk: "I don't know"
+    };
 
-    // ─── Algorithm ──────────────────────────────────────────────────────────────
+    const state = {
+        screen: 'setup',
+        answers: [],
+        asked: [],
+        currentQuestion: null,
+        scores: []
+    };
 
-    function pickBestQuestion() {
-        let best = -1, bestScore = -1;
-        for (let i = 0; i < QUESTIONS.length; i++) {
-            if (askedQs.includes(i)) continue;
-            const trueCount = remaining.filter(c => c.attrs[i] === 1).length;
-            const ratio = trueCount / remaining.length;
-            // Score = how close to a 50/50 split (1.0 = perfect, 0 = all same)
-            const score = 1 - Math.abs(0.5 - ratio) * 2;
-            if (score > bestScore) { bestScore = score; best = i; }
-        }
-        return best;
+    const gameContent = document.getElementById('gameContent');
+    const sideContent = document.getElementById('sideContent');
+    const heroCharacterCount = document.getElementById('heroCharacterCount');
+    const heroQuestionCount = document.getElementById('heroQuestionCount');
+
+    heroCharacterCount.textContent = CHARACTERS.length;
+    heroQuestionCount.textContent = QUESTIONS.length;
+
+    function c(name, movie, wiki, clue, traits) {
+        return { name, movie, wiki, clue, traits };
     }
 
-    // ─── Rendering ──────────────────────────────────────────────────────────────
+    function clamp(value, min, max) {
+        return Math.max(min, Math.min(max, value));
+    }
 
-    function render() {
-        // Should we guess?
-        if (remaining.length === 0) { showStumped(); return; }
-        if (remaining.length === 1) { showGuess(remaining[0]); return; }
-        if (qCount >= 16)           { showGuess(remaining[0]); return; }
+    function escapeHtml(value) {
+        return String(value).replace(/[&<>"']/g, char => ({
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            '"': '&quot;',
+            "'": '&#39;'
+        }[char]));
+    }
 
-        currentQ = pickBestQuestion();
-        if (currentQ === -1) { showGuess(remaining[0]); return; }
+    function scoreCharacter(character) {
+        let score = 0;
+        state.answers.forEach(({ key, choice }) => {
+            const trait = character.traits[key] === 1;
+            if (choice === 'idk') {
+                score += 0.04;
+            } else if (choice === 'maybe') {
+                score += trait ? 0.42 : -0.08;
+            } else if (choice === 'yes') {
+                score += trait ? 1.2 : -1.35;
+            } else if (choice === 'no') {
+                score += trait ? -1.35 : 1.0;
+            }
+        });
+        return score;
+    }
 
-        const progressPct = Math.min((qCount / 16) * 100, 95);
-        const poolText = remaining.length === CHARACTERS.length
-            ? `${CHARACTERS.length} characters in play`
-            : remaining.length <= 3
-                ? `Almost there — ${remaining.length} character${remaining.length > 1 ? 's' : ''} left`
-                : `Narrowing down — ${remaining.length} characters remaining`;
+    function rankedCharacters() {
+        const scored = CHARACTERS.map(character => ({
+            ...character,
+            score: scoreCharacter(character)
+        })).sort((a, b) => b.score - a.score || a.name.localeCompare(b.name));
 
-        document.getElementById('gameContent').innerHTML = `
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:var(--spacing-lg);">
-                <span style="font-size:var(--text-sm); color:var(--color-neutral-500);">Question ${qCount + 1}</span>
-                <span class="pool-badge">${poolText}</span>
-            </div>
-            <div class="progress-bar-track" style="margin-bottom:var(--spacing-2xl);">
-                <div class="progress-bar-fill" style="width:${progressPct}%"></div>
-            </div>
+        const minScore = scored[scored.length - 1]?.score || 0;
+        const shifted = scored.map(item => item.score - minScore + 0.35);
+        const total = shifted.reduce((sum, value) => sum + value, 0) || 1;
 
-            <p class="question-text">${QUESTIONS[currentQ]}</p>
+        return scored.map((item, index) => ({
+            ...item,
+            confidence: index === 0 && state.answers.length === 0
+                ? Math.round(100 / CHARACTERS.length)
+                : Math.round((shifted[index] / total) * 100)
+        }));
+    }
 
-            <div class="answer-grid">
-                <button class="answer-btn btn-yes"   onclick="answer('yes')">✅ Yes</button>
-                <button class="answer-btn btn-no"    onclick="answer('no')">❌ No</button>
-                <button class="answer-btn btn-maybe" onclick="answer('maybe')">🤔 Maybe</button>
-                <button class="answer-btn btn-idk"   onclick="answer('idk')">🤷 I Don't Know</button>
-            </div>
+    function activePool(ranked) {
+        if (!ranked.length) return [];
+        const topScore = ranked[0].score;
+        return ranked.filter(item => item.score >= topScore - 2.1).slice(0, 14);
+    }
 
-            <p style="margin-top:var(--spacing-2xl); text-align:center;">
-                <button onclick="resetGame()" style="background:none; border:none; color:var(--color-neutral-500); font-size:var(--text-sm); cursor:pointer; font-family:inherit;">
-                    ↺ Start over
-                </button>
-            </p>
-        `;
+    function pickBestQuestion(ranked) {
+        const pool = activePool(ranked);
+        let bestQuestion = null;
+        let bestScore = -Infinity;
+
+        QUESTIONS.forEach(question => {
+            if (state.asked.includes(question.key)) return;
+
+            let yesWeight = 0;
+            let noWeight = 0;
+            pool.forEach((character, index) => {
+                const weight = 1 / (index + 1);
+                if (character.traits[question.key] === 1) yesWeight += weight;
+                else noWeight += weight;
+            });
+
+            const total = yesWeight + noWeight;
+            if (!total || yesWeight === 0 || noWeight === 0) return;
+
+            const splitScore = 1 - Math.abs(0.5 - (yesWeight / total)) * 2;
+            const freshness = question.key === 'pixar' && state.answers.length === 0 ? -0.08 : 0;
+            const score = splitScore + freshness;
+            if (score > bestScore) {
+                bestScore = score;
+                bestQuestion = question;
+            }
+        });
+
+        return bestQuestion;
+    }
+
+    function shouldGuess(ranked) {
+        if (!state.answers.length) return false;
+        if (state.answers.length >= GAME_CONFIG.maxQuestions) return true;
+        if (state.answers.length < 4) return false;
+
+        const lead = (ranked[0]?.score || 0) - (ranked[1]?.score || 0);
+        return lead >= GAME_CONFIG.threshold && ranked[0].confidence >= 18;
+    }
+
+    function startGame() {
+        state.screen = 'question';
+        state.answers = [];
+        state.asked = [];
+        state.currentQuestion = null;
+        render();
+        scrollGameIntoView();
     }
 
     function answer(choice) {
-        askedQs.push(currentQ);
-        qCount++;
-
-        if (choice === 'yes') {
-            remaining = remaining.filter(c => c.attrs[currentQ] === 1);
-        } else if (choice === 'no') {
-            remaining = remaining.filter(c => c.attrs[currentQ] === 0);
-        }
-        // maybe / idk = no filtering
-
+        if (state.screen !== 'question' || !state.currentQuestion) return;
+        state.answers.push({
+            key: state.currentQuestion.key,
+            text: state.currentQuestion.text,
+            choice
+        });
+        state.asked.push(state.currentQuestion.key);
         render();
+        scrollGameIntoView();
     }
 
-    async function showGuess(character) {
-        document.getElementById('gameContent').innerHTML = `
-            <div class="character-reveal">
-                <p style="font-size:var(--text-sm); color:var(--color-neutral-500); margin-bottom:var(--spacing-lg);">
-                    ${qCount} question${qCount !== 1 ? 's' : ''} asked
+    function undoAnswer() {
+        if (!state.answers.length) return;
+        const last = state.answers.pop();
+        state.asked = state.asked.filter(key => key !== last.key);
+        state.screen = 'question';
+        render();
+        scrollGameIntoView();
+    }
+
+    function resetGame() {
+        state.screen = 'setup';
+        state.answers = [];
+        state.asked = [];
+        state.currentQuestion = null;
+        render();
+        scrollGameIntoView();
+    }
+
+    function forceGuess() {
+        const ranked = rankedCharacters();
+        state.screen = 'result';
+        renderResult(ranked[0], ranked);
+        renderSide(ranked);
+        scrollGameIntoView();
+    }
+
+    function scrollGameIntoView() {
+        requestAnimationFrame(() => {
+            document.getElementById('gameCard')?.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        });
+    }
+
+    function render() {
+        const ranked = rankedCharacters();
+        state.scores = ranked;
+
+        if (state.screen === 'setup') {
+            renderSetup();
+        } else if (state.screen === 'result' || shouldGuess(ranked)) {
+            state.screen = 'result';
+            renderResult(ranked[0], ranked);
+        } else {
+            const question = pickBestQuestion(ranked);
+            if (!question) {
+                state.screen = 'result';
+                renderResult(ranked[0], ranked);
+            } else {
+                state.currentQuestion = question;
+                renderQuestion(question, ranked);
+            }
+        }
+
+        renderSide(ranked);
+    }
+
+    function renderSetup() {
+        gameContent.innerHTML = `
+            <div class="game-reveal">
+                <p class="result-kicker">Ready when you are</p>
+                <h2 style="margin-bottom: var(--spacing-md);">Pick a character in your head.</h2>
+                <p style="max-width: 560px; margin: 0 auto; color: var(--color-neutral-600);">
+                    The game can handle fuzzy answers, so you do not need to be perfectly certain about every clue.
                 </p>
-                <div class="image-placeholder" id="imgPlaceholder">${character.emoji}</div>
-                <h2 style="margin-bottom:var(--spacing-sm);">I think it's...</h2>
-                <h1 style="color:var(--color-accent); margin-bottom:var(--spacing-sm);">${character.name}</h1>
-                <p style="color:var(--color-neutral-600); margin-bottom:var(--spacing-2xl);">from <em>${character.movie}</em></p>
-                <div style="display:flex; gap:var(--spacing-md); justify-content:center; flex-wrap:wrap; margin-bottom:var(--spacing-xl);">
-                    <button class="btn btn-primary" onclick="resetGame()">🎉 Got it! Play Again</button>
-                    <button class="btn btn-secondary" onclick="resetGame()">😅 Wrong, Try Again</button>
+            </div>
+
+            <div class="setup-grid">
+                <div class="game-mode-summary" aria-label="Classic game mode">
+                    <span class="mode-name">Classic guessing</span>
+                    <span class="mode-desc">A balanced run with enough clues to recover from fuzzy answers.</span>
+                </div>
+            </div>
+
+            <div class="tool-row">
+                <button class="btn btn-primary" type="button" onclick="startGame()">Start guessing</button>
+            </div>
+        `;
+    }
+
+    function renderQuestion(question, ranked) {
+        const maxQuestions = GAME_CONFIG.maxQuestions;
+        const progress = clamp((state.answers.length / maxQuestions) * 100, 4, 96);
+        const pool = activePool(ranked);
+        const poolText = state.answers.length === 0
+            ? `${CHARACTERS.length} characters in play`
+            : `${pool.length} strong match${pool.length === 1 ? '' : 'es'} left`;
+
+        gameContent.innerHTML = `
+            <div class="question-header">
+                <span class="question-meta">Question ${state.answers.length + 1} of ${maxQuestions}</span>
+                <span class="pool-badge">${escapeHtml(poolText)}</span>
+            </div>
+
+            <div class="progress-bar-track">
+                <div class="progress-bar-fill" style="width: ${progress}%"></div>
+            </div>
+
+            <div class="question-text">${escapeHtml(question.text)}</div>
+
+            <div class="answer-grid">
+                <button class="answer-btn answer-yes" type="button" onclick="answer('yes')">Yes</button>
+                <button class="answer-btn answer-no" type="button" onclick="answer('no')">No</button>
+                <button class="answer-btn answer-maybe" type="button" onclick="answer('maybe')">Maybe</button>
+                <button class="answer-btn answer-idk" type="button" onclick="answer('idk')">I don't know</button>
+            </div>
+
+            <div class="tool-row">
+                <button class="ghost-btn" type="button" onclick="undoAnswer()" ${state.answers.length ? '' : 'disabled'}>Undo</button>
+                <button class="ghost-btn" type="button" onclick="forceGuess()">Guess now</button>
+                <button class="ghost-btn" type="button" onclick="resetGame()">Restart</button>
+            </div>
+        `;
+    }
+
+    function renderResult(character, ranked) {
+        const alternatives = ranked.slice(1, 5).map(item => `
+            <span class="alt-pill">${escapeHtml(item.name)} (${item.confidence}%)</span>
+        `).join('');
+
+        const confidence = clamp(character.confidence, 4, 96);
+
+        gameContent.innerHTML = `
+            <div class="game-reveal">
+                <p class="result-kicker">${state.answers.length} clue${state.answers.length === 1 ? '' : 's'} answered</p>
+                <div class="portrait-wrap">
+                    <div class="image-placeholder" id="imgPlaceholder" aria-hidden="true">?</div>
+                </div>
+                <h2 style="margin-bottom: var(--spacing-sm);">I think it's...</h2>
+                <h1 class="result-name">${escapeHtml(character.name)}</h1>
+                <p class="result-detail">from <em>${escapeHtml(character.movie)}</em> - ${escapeHtml(character.clue)}</p>
+
+                <div class="match-meter">
+                    <div class="match-meter-row">
+                        <span>Match confidence</span>
+                        <span>${confidence}%</span>
+                    </div>
+                    <div class="progress-bar-track" style="margin-bottom: 0;">
+                        <div class="progress-bar-fill" style="width: ${confidence}%"></div>
+                    </div>
+                </div>
+
+                <div class="alternatives" aria-label="Other possible matches">
+                    ${alternatives}
+                </div>
+
+                <div class="tool-row">
+                    <button class="btn btn-primary" type="button" onclick="startGame()">Play again</button>
+                    <button class="btn btn-secondary" type="button" onclick="undoAnswer()">Back up one clue</button>
+                    <button class="btn btn-secondary" type="button" onclick="resetGame()">New game</button>
                 </div>
             </div>
         `;
+
         loadImage(character);
+    }
+
+    function renderSide(ranked = rankedCharacters()) {
+        const topCandidates = ranked.slice(0, 6).map(item => `
+            <li class="candidate-row">
+                <span>
+                    <span class="candidate-name">${escapeHtml(item.name)}</span>
+                    <span class="candidate-movie">${escapeHtml(item.movie)}</span>
+                </span>
+                <span class="confidence">${clamp(item.confidence, 1, 99)}%</span>
+            </li>
+        `).join('');
+
+        const history = state.answers.slice(-6).reverse().map(item => `
+            <li class="history-item">
+                <strong>${escapeHtml(CHOICE_LABELS[item.choice])}</strong>
+                <span> - ${escapeHtml(item.text)}</span>
+            </li>
+        `).join('');
+
+        sideContent.innerHTML = `
+            <ul class="candidate-list" aria-label="Top candidate rankings">
+                ${topCandidates}
+            </ul>
+
+            <h2 class="panel-title" style="margin-top: var(--spacing-xl);">Recent Answers</h2>
+            ${history ? `<ul class="history-list">${history}</ul>` : '<p style="font-size: var(--text-sm); margin-bottom: 0;">No clues answered yet.</p>'}
+        `;
     }
 
     async function loadImage(character) {
         try {
-            const res  = await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(character.wiki)}`);
-            const data = await res.json();
-            const src  = data.thumbnail?.source;
+            const response = await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(character.wiki)}`);
+            const data = await response.json();
+            const src = data.thumbnail?.source;
             const placeholder = document.getElementById('imgPlaceholder');
             if (src && placeholder) {
-                placeholder.outerHTML = `<img src="${src}" alt="${character.name}" class="character-image">`;
+                placeholder.outerHTML = `<img src="${src}" alt="${escapeHtml(character.name)}" class="character-image">`;
             }
-        } catch (e) {
-            // keep emoji placeholder on network error
+        } catch (error) {
+            // The fallback portrait stays visible if the image request is unavailable.
         }
     }
 
-    function showStumped() {
-        document.getElementById('gameContent').innerHTML = `
-            <div class="character-reveal">
-                <div class="image-placeholder">🤯</div>
-                <h2 style="margin-bottom:var(--spacing-md);">You stumped me!</h2>
-                <p style="color:var(--color-neutral-600); margin-bottom:var(--spacing-2xl);">
-                    Your answers narrowed the pool to zero — either a very unique character or some tricky answers! Who were you thinking of?
-                </p>
-                <button class="btn btn-primary" onclick="resetGame()">Play Again</button>
-            </div>
-        `;
-    }
+    document.addEventListener('keydown', event => {
+        const key = event.key.toLowerCase();
+        if (key === 'y') answer('yes');
+        if (key === 'n') answer('no');
+        if (key === 'm') answer('maybe');
+        if (key === 'i') answer('idk');
+        if (key === 'u') undoAnswer();
+        if (key === 'r') resetGame();
+    });
 
-    function resetGame() {
-        remaining = [...CHARACTERS];
-        askedQs   = [];
-        currentQ  = -1;
-        qCount    = 0;
-        render();
-    }
-
-    // ─── Start ───────────────────────────────────────────────────────────────────
     render();
     </script>
 </body>
