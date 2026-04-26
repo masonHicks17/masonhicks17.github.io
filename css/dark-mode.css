@@ -3,211 +3,146 @@
    ============================================ */
 
 body.dark-mode {
-    --color-background: #0f0e0d;
-    --color-foreground: #fafaf9;
-    --color-border: #292524;
-    --color-surface: #1c1917;
-
-    --color-primary-light: rgba(26, 58, 82, 0.2);
-    --color-accent-light: rgba(255, 107, 53, 0.15);
-    --color-accent-muted: rgba(255, 107, 53, 0.15);
-}
-
-body.dark-mode p {
-    color: #d6d3d1;
+    --color-background: #0f1724;
+    --color-foreground: #f4f7fb;
+    --color-border: #26364b;
+    --color-surface: #162235;
+    --color-surface-alt: #1c2b42;
+    --color-primary: #f4f7fb;
+    --color-secondary: #9eb8d5;
+    --color-accent: #7fa7d7;
+    --color-accent-strong: #a8c5e7;
+    --color-accent-light: rgba(127, 167, 215, 0.16);
+    --color-accent-muted: rgba(127, 167, 215, 0.24);
+    --color-primary-light: rgba(244, 247, 251, 0.08);
+    --color-neutral-50: #f4f7fb;
+    --color-neutral-100: #dce6f1;
+    --color-neutral-150: #c7d5e6;
+    --color-neutral-200: #7e8ea2;
+    --color-neutral-300: #64758c;
+    --color-neutral-400: #b5c2d0;
+    --color-neutral-500: #b5c2d0;
+    --color-neutral-600: #d3deea;
+    --color-neutral-700: #e7eef7;
 }
 
 body.dark-mode .navbar {
-    background: rgba(15, 14, 13, 0.95);
-    border-bottom-color: #292524;
+    background: rgba(15, 23, 36, 0.9);
 }
 
-body.dark-mode .nav-link {
-    color: #a8a29e;
+body.dark-mode p,
+body.dark-mode .hero-tagline,
+body.dark-mode .hero-description,
+body.dark-mode .lab-subtitle,
+body.dark-mode .project-highlight span,
+body.dark-mode .hero-visual-card-secondary p {
+    color: #b5c2d0;
 }
 
-body.dark-mode .theme-toggle {
-    border-color: #292524;
-    color: #a8a29e;
-}
-
-body.dark-mode .theme-toggle:hover {
-    background: #1c1917;
-    color: var(--color-secondary);
-    border-color: var(--color-secondary);
-}
-
-body.dark-mode .stat-card {
-    background: #1c1917;
-    border-color: #292524;
-}
-
-body.dark-mode .stat-card:hover {
-    border-color: var(--color-accent);
-}
-
+body.dark-mode .hero-contact-chip,
+body.dark-mode .hero-visual-card,
+body.dark-mode .snapshot-card,
 body.dark-mode .project-card,
-body.dark-mode .game-card {
-    background: #1c1917;
-    border-color: #292524;
+body.dark-mode .game-card,
+body.dark-mode .workflow-card,
+body.dark-mode .stat-card,
+body.dark-mode .experience-column,
+body.dark-mode .contact-card,
+body.dark-mode .content-lab-card,
+body.dark-mode .apps-callout,
+body.dark-mode .contact-shell,
+body.dark-mode .featured-project {
+    background: var(--color-surface);
+    border-color: var(--color-border);
 }
 
-body.dark-mode .project-card:hover,
-body.dark-mode .game-card:hover {
-    border-color: var(--color-accent);
-}
-
-body.dark-mode .project-image,
-body.dark-mode .game-image {
-    background: #292524;
-}
-
-body.dark-mode .project-content p,
-body.dark-mode .game-content p {
-    color: #d6d3d1;
-}
-
-body.dark-mode .tag {
-    background: rgba(255, 107, 53, 0.15);
-    color: #ff8a5b;
-}
-
-body.dark-mode .workflow-card {
-    background: #1c1917;
-    border-color: #292524;
-}
-
-body.dark-mode .workflow-card:hover {
-    border-color: var(--color-accent);
-}
-
-body.dark-mode .workflow-card p {
-    color: #d6d3d1;
-}
-
-body.dark-mode .content-lab-card {
-    background: linear-gradient(135deg, rgba(26, 58, 82, 0.3) 0%, rgba(255, 107, 53, 0.1) 100%);
-    border-color: #292524;
-}
-
-body.dark-mode .content-lab-card:hover {
-    border-color: var(--color-accent);
-}
-
-body.dark-mode .content-lab-card p {
-    color: #d6d3d1;
-}
-
-body.dark-mode .lab-subtitle {
-    color: #a8a29e;
-}
-
-body.dark-mode .experience-column {
-    background: #1c1917;
-    border-color: #292524;
-}
-
-body.dark-mode .experience-item p {
-    color: #d6d3d1;
-}
-
-body.dark-mode .skill-group p {
-    color: #d6d3d1;
-}
-
-body.dark-mode .contact-card {
-    background: #1c1917;
-    border-color: #292524;
-}
-
-body.dark-mode .contact-card:hover {
-    background: rgba(255, 107, 53, 0.1);
-    border-color: var(--color-accent);
-}
-
-body.dark-mode .contact-card p {
-    color: #d6d3d1;
-}
-
-body.dark-mode .contact-intro {
-    color: #d6d3d1;
-}
-
+body.dark-mode .hero-visual-shell,
+body.dark-mode .project-media-frame,
+body.dark-mode .hero-media-frame,
 body.dark-mode .footer {
-    background: #1c1917;
-    border-top-color: #292524;
+    background: linear-gradient(180deg, rgba(28, 43, 66, 0.95) 0%, rgba(22, 34, 53, 0.95) 100%);
+    border-color: var(--color-border);
+}
+
+body.dark-mode .hero-media-panel,
+body.dark-mode .project-highlight,
+body.dark-mode .media-mini-panel,
+body.dark-mode .game-media-block,
+body.dark-mode .contact-icon,
+body.dark-mode .placeholder-image {
+    border-color: rgba(38, 54, 75, 0.9);
+}
+
+body.dark-mode .hero-media-panel,
+body.dark-mode .project-highlight,
+body.dark-mode .media-mini-panel,
+body.dark-mode .game-media-block,
+body.dark-mode .placeholder-image {
+    background: rgba(244, 247, 251, 0.04);
+}
+
+body.dark-mode .hero-media-panel-tall,
+body.dark-mode .screen-card,
+body.dark-mode .game-media-block.compact {
+    background: linear-gradient(180deg, rgba(127, 167, 215, 0.22) 0%, rgba(244, 247, 251, 0.05) 100%);
+}
+
+body.dark-mode .media-mini-panel.accent,
+body.dark-mode .game-media-block.offset {
+    background: linear-gradient(180deg, rgba(158, 184, 213, 0.18) 0%, rgba(244, 247, 251, 0.04) 100%);
+}
+
+body.dark-mode .btn-secondary,
+body.dark-mode .theme-toggle {
+    background: rgba(22, 34, 53, 0.92);
+}
+
+body.dark-mode .btn-secondary:hover,
+body.dark-mode .theme-toggle:hover,
+body.dark-mode .hero-contact-chip:hover,
+body.dark-mode .snapshot-card:hover,
+body.dark-mode .contact-card:hover,
+body.dark-mode .project-card:hover,
+body.dark-mode .game-card:hover,
+body.dark-mode .workflow-card:hover,
+body.dark-mode .stat-card:hover,
+body.dark-mode .content-lab-card:hover {
+    background: rgba(28, 43, 66, 0.96);
+}
+
+body.dark-mode .contact-icon {
+    background: var(--color-accent-light);
+}
+
+body.dark-mode .tag,
+body.dark-mode .lab-status {
+    background: rgba(127, 167, 215, 0.16);
+    color: var(--color-accent);
+}
+
+body.dark-mode .screen-header,
+body.dark-mode .screen-chart,
+body.dark-mode .screen-list span {
+    background: rgba(244, 247, 251, 0.1);
+}
+
+body.dark-mode .screen-chart {
+    background: linear-gradient(180deg, rgba(244, 247, 251, 0.08) 0%, rgba(127, 167, 215, 0.2) 100%);
 }
 
 body.dark-mode .footer p {
-    color: #a8a29e;
-}
-
-body.dark-mode ::-webkit-scrollbar-track {
-    background: #1c1917;
+    color: #8fa1b8;
 }
 
 body.dark-mode ::-webkit-scrollbar-thumb {
-    background: #44403c;
+    background: #334964;
 }
 
-body.dark-mode ::-webkit-scrollbar-thumb:hover {
-    background: #57534e;
+body.dark-mode ::-webkit-scrollbar-track {
+    background: #162235;
 }
 
-/* Hero section adjustments for dark mode */
-body.dark-mode .hero-tagline {
-    color: #d6d3d1;
-}
-
-body.dark-mode .hero-description {
-    color: #d6d3d1;
-}
-
-body.dark-mode .about-text p {
-    color: #d6d3d1;
-}
-
-body.dark-mode .about-stats {
-    color: #d6d3d1;
-}
-
-body.dark-mode .section-header h2 {
-    color: #fafaf9;
-}
-
-body.dark-mode .column-title {
-    color: #ff8a5b;
-}
-
-body.dark-mode .experience-role {
-    color: #ff8a5b;
-}
-
-body.dark-mode .experience-item h4 {
-    color: #fafaf9;
-}
-
-body.dark-mode .workflow-number {
-    color: #ff8a5b;
-}
-
-body.dark-mode .stat-number {
-    color: #ff8a5b;
-}
-
-body.dark-mode .project-content h3,
-body.dark-mode .game-content h3 {
-    color: #fafaf9;
-}
-
-body.dark-mode .workflow-card h3 {
-    color: #fafaf9;
-}
-
-body.dark-mode .content-lab-card h3 {
-    color: #fafaf9;
-}
-
-body.dark-mode .contact-card h4 {
-    color: #fafaf9;
+body.dark-mode .back-to-top {
+    background: rgba(22, 34, 53, 0.9);
+    border-color: var(--color-border);
 }

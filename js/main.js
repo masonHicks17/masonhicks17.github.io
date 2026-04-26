@@ -109,6 +109,6 @@ const getCurrentTheme = () => {
 };
 
 // Log portfolio loaded
-console.log('%c✨ Mason Hicks Portfolio', 'font-size: 20px; font-weight: bold; color: #ff6b35;');
+console.log('%cMason Hicks Portfolio', 'font-size: 20px; font-weight: bold; color: #315f8d;');
 console.log('%cBuilt with HTML, CSS, and JavaScript', 'font-size: 12px; color: #666;');
 console.log('%cTheme: ' + getCurrentTheme(), 'font-size: 12px; color: #999;');

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apps & Experiments — Mason Hicks</title>
+    <link rel="stylesheet" href="css/styles.css?v=blue-apps-redesign">
+    <link rel="stylesheet" href="css/dark-mode.css?v=blue-apps-redesign">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="index.html" class="logo-text">MH</a>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html#projects" class="nav-link">Work</a></li>
+                <li><a href="index.html#snapshot" class="nav-link">Snapshot</a></li>
+                <li><a href="index.html#experience" class="nav-link">Experience</a></li>
+                <li><a href="apps.html" class="nav-link active">Apps</a></li>
+            </ul>
+            <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="5"></circle>
+                    <line x1="12" y1="1" x2="12" y2="3"></line>
+                    <line x1="12" y1="21" x2="12" y2="23"></line>
+                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                    <line x1="1" y1="12" x2="3" y2="12"></line>
+                    <line x1="21" y1="12" x2="23" y2="12"></line>
+                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                </svg>
+            </button>
+        </div>
+    </nav>
+
+    <main id="top">
+        <section class="section apps-page-hero">
+            <div class="container">
+                <div class="section-intro reveal">
+                    <p class="section-eyebrow">Apps and experiments</p>
+                    <h1>Side Builds</h1>
+                    <p>A separate place for games, small apps, and experiments that show range without crowding the recruiter-focused homepage.</p>
+                </div>
+                <div class="hero-cta apps-page-actions reveal">
+                    <a href="index.html#projects" class="btn btn-secondary">Back to Featured Work</a>
+                    <a href="#apps-list" class="btn btn-primary">Browse Apps</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="apps-list" class="section games-section section-muted">
+            <div class="container">
+                <div class="games-grid reveal-stagger">
+                    <div class="game-card" data-game="flappy-bird">
+                    <div class="game-image">
+                            <div class="project-media-frame muted-frame image-frame image-frame-card">
+                                <img src="assets/images/portfolio/flappy-cave-card.png" alt="Flappy Cave app preview" class="portfolio-image" onerror="this.style.display='none'">
+                            </div>
+                        </div>
+                        <div class="game-content">
+                            <h3>Flappy Bird Clone</h3>
+                            <p>A clean remake of the classic reflex game built to explore game mechanics and canvas rendering.</p>
+                            <div class="project-tags">
+                                <span class="tag">Game</span>
+                                <span class="tag">Canvas API</span>
+                                <span class="tag">JavaScript</span>
+                            </div>
+                            <div class="project-actions">
+                                <a href="games/flappy-bird.html" class="btn btn-text">Play Game →</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="game-card" data-game="choose-path">
+                    <div class="game-image">
+                            <div class="project-media-frame muted-frame image-frame image-frame-card">
+                                <img src="assets/images/portfolio/choose-path-card.png" alt="Choose Your Path app preview" class="portfolio-image" onerror="this.style.display='none'">
+                            </div>
+                        </div>
+                        <div class="game-content">
+                            <h3>Choose Your Path</h3>
+                            <p>An interactive narrative game exploring branching storytelling and state management through player choices.</p>
+                            <div class="project-tags">
+                                <span class="tag">Game</span>
+                                <span class="tag">Narrative</span>
+                                <span class="tag">Interactive</span>
+                            </div>
+                            <div class="project-actions">
+                                <a href="games/choose-path.html" class="btn btn-text">Play Game →</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="game-card" data-game="guess-character">
+                    <div class="game-image">
+                            <div class="project-media-frame muted-frame image-frame image-frame-card">
+                                <img src="assets/images/portfolio/guess-character-card.png" alt="Guess the Character app preview" class="portfolio-image" onerror="this.style.display='none'">
+                            </div>
+                        </div>
+                        <div class="game-content">
+                            <h3>Guess the Character</h3>
+                            <p>A guessing game where the AI narrows down which character you're thinking of through smart questions.</p>
+                            <div class="project-tags">
+                                <span class="tag">Game</span>
+                                <span class="tag">AI</span>
+                                <span class="tag">Logic</span>
+                            </div>
+                            <div class="project-actions">
+                                <a href="games/guess-character.html" class="btn btn-text">Play Game →</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="game-card">
+                    <div class="game-image">
+                            <div class="project-media-frame muted-frame image-frame image-frame-card">
+                                <img src="assets/images/portfolio/content-lab-card.png" alt="Content Lab app preview" class="portfolio-image" onerror="this.style.display='none'">
+                            </div>
+                        </div>
+                        <div class="game-content">
+                            <h3>Content Lab</h3>
+                            <p>A planned space for AI-generated content experiments, visual studies, and creative process work.</p>
+                            <div class="project-tags">
+                                <span class="tag">In Development</span>
+                                <span class="tag">AI</span>
+                                <span class="tag">Creative</span>
+                            </div>
+                            <div class="project-actions">
+                                <span class="btn btn-text">Coming Soon</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <a href="#top" class="back-to-top" aria-label="Return to top">↑</a>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 Mason Hicks. All rights reserved. Built with curiosity and care.</p>
+        </div>
+    </footer>
+
+    <script src="js/theme-toggle.js"></script>
+    <script src="js/animations.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
