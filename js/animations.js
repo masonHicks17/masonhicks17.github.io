@@ -1,63 +1,84 @@
-// Scroll Animations & Section Reveals
+// Scroll animations with reduced-motion support
 
-const observerOptions = {
-    threshold: 0.1,
-    rootMargin: '0px 0px -100px 0px'
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+const desktopQuery = window.matchMedia('(min-width: 769px)');
+
+const setVisibleImmediately = () => {
+    document.querySelectorAll('.reveal, .reveal-stagger > *').forEach((element) => {
+        element.classList.add('is-visible');
+        element.style.transitionDelay = '0ms';
+    });
 };
 
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.classList.add('slide-up');
-            // Optional: unobserve after animation
-            // observer.unobserve(entry.target);
-        }
-    });
-}, observerOptions);
-
-// Observe all cards and sections
-document.addEventListener('DOMContentLoaded', () => {
-    const elementsToObserve = document.querySelectorAll(
-        '.project-card, .game-card, .workflow-card, .about-text, .contact-card, .stat-card, .experience-column, .content-lab-card'
-    );
-
-    elementsToObserve.forEach(element => {
-        observer.observe(element);
-    });
-});
-
-// Smooth hover effects on cards
-const cards = document.querySelectorAll('.project-card, .game-card, .workflow-card, .stat-card, .contact-card');
-
-cards.forEach(card => {
-    card.addEventListener('mouseenter', (e) => {
-        // Optional: add glow effect on hover
-        const rect = card.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        // Can be extended with pointer tracking for advanced effects
-    });
-});
-
-// Parallax effect on hero section
-const heroSection = document.getElementById('hero');
-
-if (heroSection) {
-    window.addEventListener('scroll', () => {
-        const scrolled = window.pageYOffset;
-        const parallaxElements = heroSection.querySelectorAll('.gradient-orb');
-        parallaxElements.forEach(element => {
-            element.style.transform = `translateY(calc(-50% + ${scrolled * 0.3}px))`;
+const applyStaggerDelays = () => {
+    document.querySelectorAll('.reveal-stagger').forEach((group) => {
+        Array.from(group.children).forEach((child, index) => {
+            child.style.transitionDelay = prefersReducedMotion.matches ? '0ms' : `${index * 80}ms`;
         });
     });
-}
+};
 
-// Add subtle stagger animation to grid items
-const staggerGrids = document.querySelectorAll('.projects-grid, .games-grid, .workflow-grid');
+const initRevealObserver = () => {
+    if (prefersReducedMotion.matches) {
+        setVisibleImmediately();
+        return null;
+    }
 
-staggerGrids.forEach(grid => {
-    const items = grid.querySelectorAll('.project-card, .game-card, .workflow-card');
-    items.forEach((item, index) => {
-        item.style.animationDelay = `${index * 50}ms`;
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+            if (!entry.isIntersecting) {
+                return;
+            }
+
+            entry.target.classList.add('is-visible');
+            observer.unobserve(entry.target);
+        });
+    }, {
+        threshold: 0.12,
+        rootMargin: '0px 0px -8% 0px'
     });
+
+    document.querySelectorAll('.reveal').forEach((element) => observer.observe(element));
+    document.querySelectorAll('.reveal-stagger > *').forEach((element) => observer.observe(element));
+
+    return observer;
+};
+
+const initParallax = () => {
+    const parallaxElements = document.querySelectorAll('.parallax-soft');
+
+    if (!parallaxElements.length) {
+        return;
+    }
+
+    if (prefersReducedMotion.matches || !desktopQuery.matches) {
+        parallaxElements.forEach((element) => {
+            element.style.transform = '';
+        });
+        return;
+    }
+
+    const onScroll = () => {
+        const offset = Math.min(window.scrollY * 0.08, 24);
+
+        parallaxElements.forEach((element) => {
+            element.style.transform = `translateY(${offset}px)`;
+        });
+    };
+
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+};
+
+document.addEventListener('DOMContentLoaded', () => {
+    applyStaggerDelays();
+    initRevealObserver();
+    initParallax();
+});
+
+prefersReducedMotion.addEventListener('change', () => {
+    applyStaggerDelays();
+    if (prefersReducedMotion.matches) {
+        setVisibleImmediately();
+    }
 });
