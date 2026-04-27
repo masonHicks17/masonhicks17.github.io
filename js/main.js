@@ -61,8 +61,12 @@ document.head.appendChild(style);
 
 // Project card click handler (for future detail pages)
 document.querySelectorAll('.project-card, .game-card').forEach(card => {
-    card.addEventListener('click', function() {
-        const learnMoreBtn = this.querySelector('.btn-text');
+    card.addEventListener('click', function(e) {
+        if (e.target.closest('a, button')) {
+            return;
+        }
+
+        const learnMoreBtn = this.querySelector('a.btn-text[href]');
         if (learnMoreBtn) {
             learnMoreBtn.click();
         }
