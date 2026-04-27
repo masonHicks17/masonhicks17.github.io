@@ -50,6 +50,7 @@ body.dark-mode .experience-column,
 body.dark-mode .contact-card,
 body.dark-mode .content-lab-card,
 body.dark-mode .apps-callout,
+body.dark-mode .ai-status-panel,
 body.dark-mode .contact-shell,
 body.dark-mode .featured-project {
     background: var(--color-surface);

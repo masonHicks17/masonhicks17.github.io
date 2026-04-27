@@ -108,6 +108,10 @@ a { color: var(--accent); }
   color: var(--muted);
 }
 
+.page-back-btn {
+  flex-shrink: 0;
+}
+
 .page-content {
   flex: 1;
   width: min(860px, calc(100% - 32px));
@@ -1008,6 +1012,16 @@ select {
 }
 
 @media (max-width: 540px) {
+  .page-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .page-back-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
   .page-content { padding: 20px 0 48px; }
   .step-card-header, .step-body, .step-nav { padding-left: 18px; padding-right: 18px; }
   .scale-selector { gap: 5px; }

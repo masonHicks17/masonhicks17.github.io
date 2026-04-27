@@ -651,6 +651,7 @@ a:hover {
     display: grid;
     grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
     gap: var(--spacing-2xl);
+    align-items: center;
     padding: 1.5rem;
     border: 1px solid var(--color-border);
     border-radius: var(--radius-2xl);
@@ -662,6 +663,11 @@ a:hover {
 .featured-project-media,
 .featured-project-content {
     min-width: 0;
+}
+
+.featured-project-media {
+    align-self: start;
+    width: 100%;
 }
 
 .featured-project-content {
@@ -679,6 +685,7 @@ a:hover {
     height: 100%;
     min-height: 24rem;
     padding: 1rem;
+    overflow: hidden;
 }
 
 .image-frame {
@@ -691,6 +698,8 @@ a:hover {
 
 .image-frame-featured {
     aspect-ratio: 16 / 9;
+    height: auto;
+    min-height: 0;
 }
 
 .image-frame-card {
@@ -1190,6 +1199,77 @@ a:hover {
     background: linear-gradient(180deg, rgba(49, 95, 141, 0.2) 0%, rgba(255, 255, 255, 0.7) 100%);
 }
 
+.offerwise-preview {
+    display: grid;
+    grid-template-columns: 0.85fr 1fr;
+    gap: 0.9rem;
+    align-items: center;
+    padding: 1rem;
+    background:
+        linear-gradient(135deg, rgba(255, 255, 255, 0.94) 0%, rgba(232, 238, 245, 0.82) 100%);
+}
+
+.offerwise-preview-panel {
+    display: grid;
+    gap: 0.3rem;
+    align-content: center;
+    min-height: 100%;
+    padding: 1rem;
+    border: 1px solid rgba(207, 217, 229, 0.9);
+    border-radius: var(--radius-lg);
+    background: var(--color-surface);
+    box-shadow: var(--shadow-xs);
+}
+
+.offerwise-preview-panel span {
+    width: 2.2rem;
+    height: 2.2rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-sm);
+    background: var(--color-accent);
+    color: #fff;
+    font-size: var(--text-xs);
+    font-weight: var(--font-weight-bold);
+    letter-spacing: 0.04em;
+}
+
+.offerwise-preview-panel strong {
+    font-size: var(--text-4xl);
+    line-height: 1;
+    color: var(--color-foreground);
+}
+
+.offerwise-preview-panel small {
+    color: var(--color-neutral-500);
+    font-weight: var(--font-weight-semibold);
+}
+
+.offerwise-preview-bars {
+    display: grid;
+    gap: 0.75rem;
+}
+
+.offerwise-preview-bars span {
+    display: block;
+    height: 1rem;
+    border-radius: 999px;
+    background: rgba(49, 95, 141, 0.22);
+}
+
+.offerwise-preview-bars span:nth-child(1) {
+    width: 100%;
+}
+
+.offerwise-preview-bars span:nth-child(2) {
+    width: 78%;
+}
+
+.offerwise-preview-bars span:nth-child(3) {
+    width: 58%;
+}
+
 .apps-callout,
 .content-lab-card {
     max-width: 760px;
@@ -1219,6 +1299,66 @@ a:hover {
 
 .apps-callout p {
     max-width: 42rem;
+}
+
+.dev-page-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-sm);
+    margin-top: var(--spacing-lg);
+    font-size: var(--text-sm);
+}
+
+.dev-page-link span {
+    padding: 0.35rem 0.6rem;
+    border-radius: 999px;
+    background: rgba(49, 95, 141, 0.12);
+    color: var(--color-accent);
+    font-size: var(--text-xs);
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.dev-page-link a {
+    color: var(--color-neutral-500);
+    font-weight: var(--font-weight-semibold);
+}
+
+.dev-page-link a:hover {
+    color: var(--color-accent);
+}
+
+.ai-transition-hero {
+    padding-top: calc(72px + var(--spacing-4xl));
+    padding-bottom: var(--spacing-3xl);
+}
+
+.ai-transition-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(18rem, 0.42fr);
+    gap: var(--spacing-2xl);
+    align-items: center;
+}
+
+.ai-transition-layout h1 {
+    max-width: 12ch;
+    margin-bottom: var(--spacing-lg);
+}
+
+.ai-status-panel {
+    padding: 1.5rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-xl);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.96) 0%, rgba(232, 238, 245, 0.72) 100%);
+    box-shadow: var(--shadow-sm);
+}
+
+.ai-status-panel h2 {
+    margin-top: var(--spacing-lg);
+    margin-bottom: var(--spacing-sm);
+    font-size: var(--text-3xl);
 }
 
 .content-lab-card {
@@ -1398,6 +1538,10 @@ a:hover {
         flex-direction: column;
     }
 
+    .ai-transition-layout {
+        grid-template-columns: 1fr;
+    }
+
     .workflow-grid {
         grid-template-columns: 1fr;
     }
@@ -1427,6 +1571,11 @@ a:hover {
     .hero-cta {
         flex-direction: column;
         align-items: stretch;
+    }
+
+    .dev-page-link {
+        align-items: flex-start;
+        flex-direction: column;
     }
 
     .btn {
