@@ -102,6 +102,7 @@ function handleClick(e) {
   }
 
   // Nav buttons
+  if (e.target.closest("#btnPageBack")) { goToPreviousPage(); return; }
   if (e.target.closest("#btnBack"))  { goBack(); return; }
   if (e.target.closest("#btnNext"))  { goNext(); return; }
   if (e.target.closest("#btnRestart")) { restart(); return; }
@@ -174,6 +175,24 @@ function restart() {
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
+function goToPreviousPage() {
+  const fallback = "../../index.html";
+
+  if (document.referrer) {
+    try {
+      const referrer = new URL(document.referrer);
+      if (referrer.origin === window.location.origin) {
+        window.history.back();
+        return;
+      }
+    } catch {
+      // Fall through to the portfolio home page if the referrer is not usable.
+    }
+  }
+
+  window.location.href = fallback;
+}
+
 // ── Validation ─────────────────────────────────────────────────────────────
 
 function validateStep(step) {
@@ -232,6 +251,7 @@ function renderHeader() {
           <div class="brand-sub">Job Offer Evaluator</div>
         </div>
       </a>
+      <button class="btn btn-secondary page-back-btn" id="btnPageBack" type="button">Back to Portfolio</button>
     </header>
   `;
 }
