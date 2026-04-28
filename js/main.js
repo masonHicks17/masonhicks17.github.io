@@ -81,15 +81,6 @@ document.querySelectorAll('.project-card, .game-card').forEach(card => {
     });
 });
 
-// Fade in on page load
-window.addEventListener('load', () => {
-    document.body.style.opacity = '0';
-    setTimeout(() => {
-        document.body.style.transition = 'opacity var(--transition-base)';
-        document.body.style.opacity = '1';
-    }, 100);
-});
-
 // Prefetch navigation links for faster loading
 document.querySelectorAll('a[href*=".html"]').forEach(link => {
     const url = link.getAttribute('href');
