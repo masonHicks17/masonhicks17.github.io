@@ -70,10 +70,27 @@ const initParallax = () => {
     window.addEventListener('scroll', onScroll, { passive: true });
 };
 
+const initBackToTop = () => {
+    const btn = document.querySelector('.back-to-top');
+    if (!btn) return;
+
+    const onScroll = () => {
+        if (window.scrollY > 300) {
+            btn.classList.add('is-visible');
+        } else {
+            btn.classList.remove('is-visible');
+        }
+    };
+
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+};
+
 document.addEventListener('DOMContentLoaded', () => {
     applyStaggerDelays();
     initRevealObserver();
     initParallax();
+    initBackToTop();
 });
 
 prefersReducedMotion.addEventListener('change', () => {
