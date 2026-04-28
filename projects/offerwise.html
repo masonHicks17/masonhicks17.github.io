@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OfferWise — Mason Hicks</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/dark-mode.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <span class="logo-text"><a href="/" style="color: var(--color-primary); text-decoration: none;">MH</a></span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="/#projects" class="nav-link">Back to Portfolio</a></li>
+            </ul>
+            <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="5"></circle>
+                    <line x1="12" y1="1" x2="12" y2="3"></line>
+                    <line x1="12" y1="21" x2="12" y2="23"></line>
+                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                    <line x1="18.36" y1="18.36" x2="19.78" y2="18.36"></line>
+                    <line x1="1" y1="12" x2="3" y2="12"></line>
+                    <line x1="21" y1="12" x2="23" y2="12"></line>
+                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                </svg>
+            </button>
+        </div>
+    </nav>
+
+    <section class="section" style="padding-top: calc(70px + var(--spacing-3xl));">
+        <div class="container">
+            <a href="/#projects" class="btn btn-text" style="margin-bottom: var(--spacing-2xl);">← Back</a>
+
+            <div style="max-width: 800px;">
+                <div class="project-detail-hero-image image-frame image-frame-slide offerwise-art-frame">
+                    <picture>
+                        <source media="(max-width: 640px)" srcset="../assets/images/portfolio/offerwise-vertical.png">
+                        <img src="../assets/images/portfolio/offerwise-horizontal.png" alt="OfferWise app promotional preview" class="portfolio-image offerwise-art-image" onerror="this.style.display='none'">
+                    </picture>
+                </div>
+
+                <h1>OfferWise</h1>
+
+                <div style="display: flex; gap: var(--spacing-lg); margin-bottom: var(--spacing-xl); flex-wrap: wrap;">
+                    <span class="tag">JavaScript</span>
+                    <span class="tag">Market Data</span>
+                    <span class="tag">Decision Tool</span>
+                    <span class="tag">Career UX</span>
+                </div>
+
+                <div style="display: flex; gap: var(--spacing-md); flex-wrap: wrap; margin-bottom: var(--spacing-3xl);">
+                    <a href="../Apps/OfferWise/index.html" class="btn btn-primary">Launch App</a>
+                    <a href="/#projects" class="btn btn-secondary">Back to Work</a>
+                </div>
+
+                <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-xl); padding: var(--spacing-2xl); margin-bottom: var(--spacing-2xl);">
+                    <h3>Overview</h3>
+                    <p>OfferWise is a practical job offer evaluator that turns a messy career decision into a scored, comparable summary. It rates compensation, benefits, work-life balance, growth potential, and company culture so the user can see the true value of an offer instead of reacting only to salary.</p>
+                </div>
+
+                <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-xl); padding: var(--spacing-2xl); margin-bottom: var(--spacing-2xl);">
+                    <h3>The Problem</h3>
+                    <p>Job offers are hard to compare because the most important tradeoffs are spread across salary, benefits, role fit, risk, flexibility, and future upside. A high salary can hide weak benefits or a poor growth path, while a lower salary can still be a better long-term offer.</p>
+                </div>
+
+                <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-xl); padding: var(--spacing-2xl); margin-bottom: var(--spacing-2xl);">
+                    <h3>The Solution</h3>
+                    <p>I built a guided scoring tool that collects key offer details, translates them into category ratings, and produces an overall score with targeted improvement notes. The experience is designed to feel fast and readable, with a mobile-first interface and clear category-level feedback.</p>
+                </div>
+
+                <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-xl); padding: var(--spacing-2xl); margin-bottom: var(--spacing-2xl);">
+                    <h3>Key Features</h3>
+                    <ul style="margin-left: var(--spacing-lg); color: var(--color-neutral-600); line-height: 2;">
+                        <li>Guided offer input flow for compensation, benefits, culture, growth, and balance</li>
+                        <li>Weighted category scoring that rolls up into a simple 10-point overall rating</li>
+                        <li>Market-aware compensation checks using benchmark data and location adjustments</li>
+                        <li>Recommendation logic that highlights where the offer can improve</li>
+                        <li>Responsive interface with a phone-friendly layout and desktop-friendly review screen</li>
+                    </ul>
+                </div>
+
+                <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-xl); padding: var(--spacing-2xl); margin-bottom: var(--spacing-2xl);">
+                    <h3>Technical Stack</h3>
+                    <p><strong>Frontend:</strong> HTML, CSS, and vanilla JavaScript with modular UI rendering</p>
+                    <p><strong>Scoring:</strong> Category scoring modules for compensation, market comparison, recommendations, and labels</p>
+                    <p><strong>Data:</strong> Local benchmark and market data files for deterministic, inspectable scoring</p>
+                    <p><strong>Testing:</strong> Scoring tests covering offer evaluation logic and label outputs</p>
+                </div>
+
+                <div style="background: var(--color-accent-light); border: 1px solid var(--color-border); border-radius: var(--radius-xl); padding: var(--spacing-2xl);">
+                    <h3>What I Learned</h3>
+                    <p>The useful part of a scoring tool is not just the score. It is the explanation behind the score. OfferWise pushed me to separate input collection, scoring logic, market comparison, and recommendation copy so the tool feels transparent instead of arbitrary.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 Mason Hicks. All rights reserved. Built with curiosity and care.</p>
+        </div>
+    </footer>
+
+    <script src="../js/theme-toggle.js"></script>
+    <script src="../js/animations.js"></script>
+    <script src="../js/main.js"></script>
+</body>
+</html>

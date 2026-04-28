@@ -58,8 +58,11 @@
                 <div class="games-grid reveal-stagger">
                     <div class="game-card" data-app="offerwise">
                         <div class="game-image">
-                            <div class="project-media-frame muted-frame">
-                                <div class="game-media-block compact" aria-hidden="true"></div>
+                            <div class="project-media-frame muted-frame image-frame offerwise-art-frame">
+                                <picture>
+                                    <source media="(max-width: 640px)" srcset="assets/images/portfolio/offerwise-vertical.png">
+                                    <img src="assets/images/portfolio/offerwise-horizontal.png" alt="OfferWise app promotional preview" class="portfolio-image offerwise-art-image" onerror="this.style.display='none'">
+                                </picture>
                             </div>
                         </div>
                         <div class="game-content">
@@ -71,6 +74,7 @@
                                 <span class="tag">JavaScript</span>
                             </div>
                             <div class="project-actions">
+                                <a href="projects/offerwise.html" class="btn btn-text">View Case Study →</a>
                                 <a href="Apps/OfferWise/index.html" class="btn btn-text">Launch App →</a>
                             </div>
                         </div>
@@ -91,25 +95,6 @@
                             </div>
                             <div class="project-actions">
                                 <a href="games/flappy-bird.html" class="btn btn-text">Play Game →</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="game-card" data-game="choose-path">
-                    <div class="game-image">
-                            <div class="project-media-frame muted-frame">
-                                <div class="game-media-block offset" aria-hidden="true"></div>
-                            </div>
-                        </div>
-                        <div class="game-content">
-                            <h3>Choose Your Path</h3>
-                            <p>An interactive narrative game exploring branching storytelling and state management through player choices.</p>
-                            <div class="project-tags">
-                                <span class="tag">Game</span>
-                                <span class="tag">Narrative</span>
-                                <span class="tag">Interactive</span>
-                            </div>
-                            <div class="project-actions">
-                                <a href="games/choose-path.html" class="btn btn-text">Play Game →</a>
                             </div>
                         </div>
                     </div>
