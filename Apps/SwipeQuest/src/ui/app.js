@@ -20,10 +20,9 @@ const state = {
   dragStartY: 0,
   dragOffsetX: 0,
   dragOffsetY: 0,
-  timerValue: 0,
-  timerId: null,
   mini: {},
   miniTimerId: null,
+  confirmExit: false,
 };
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -61,17 +60,19 @@ function handleClick(event) {
   if (actionName === "modes") setScreen("modes");
   if (actionName === "stats") setScreen("stats");
   if (actionName === "summary") finishSession();
-  if (actionName === "back") goBackToPortfolio();
+  if (actionName === "back") requestExitConfirm();
+  if (actionName === "cancelExit") closeExitConfirm();
+  if (actionName === "confirmExit") goBackToPortfolio();
   if (actionName === "mode") selectMode(modeId);
   if (actionName === "category") toggleCategory(categoryId);
   if (actionName === "difficulty") selectDifficulty(difficultyId);
   if (actionName === "answer") submitAnswer(parseAnswer(answer));
   if (actionName === "skip") skipChallenge();
   if (actionName === "next") nextChallenge();
+  if (actionName === "retry") retryChallenge();
   if (actionName === "reset") resetStats();
   if (actionName === "newSession") startSession();
   if (actionName === "toggleTuning") toggleTuning();
-  if (actionName === "stopTimer") stopTimerChallenge();
   if (actionName === "mini") handleMiniAction(action.dataset);
 }
 
@@ -80,7 +81,7 @@ function handleKeydown(event) {
   const challenge = getCurrentChallenge();
   if (!challenge) return;
 
-  if (state.lastResult && ["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "Enter", " "].includes(event.key)) {
+  if (state.lastResult && ["ArrowUp", "ArrowDown", "Enter", " "].includes(event.key)) {
     nextChallenge();
     return;
   }
@@ -92,14 +93,13 @@ function handleKeydown(event) {
     return;
   }
 
-  if (event.key === "ArrowLeft") submitAnswer(false);
-  if (event.key === "ArrowRight") submitAnswer(true);
+  if (event.key === "ArrowLeft" || event.key === "ArrowRight") setScreen("modes");
   if (event.key.toLowerCase() === "s") skipChallenge();
 }
 
 function handlePointerDown(event) {
   if (event.target.closest("button")) return;
-  if (event.target.closest(".interactive-game")) {
+  if (event.target.closest(".circle-pad")) {
     handleMiniPointerDown(event);
     return;
   }
@@ -110,7 +110,6 @@ function handlePointerDown(event) {
   state.dragStartY = event.clientY;
   state.dragOffsetX = 0;
   state.dragOffsetY = 0;
-  card.setPointerCapture?.(event.pointerId);
 }
 
 function handlePointerMove(event) {
@@ -124,11 +123,30 @@ function handlePointerMove(event) {
 
   state.dragOffsetX = event.clientX - state.dragStartX;
   state.dragOffsetY = event.clientY - state.dragStartY;
+  const horizontal = Math.abs(state.dragOffsetX);
+  const vertical = Math.abs(state.dragOffsetY);
+
+  if (vertical > 12 && vertical > horizontal && !state.lastResult) {
+    card.style.transform = "";
+    card.classList.remove("drag-left", "drag-right", "drag-next", "drag-tune");
+    return;
+  }
+
+  if (horizontal < 10 && vertical < 10) return;
+
+  if (state.lastResult && vertical > horizontal) {
+    card.style.transform = `translateY(${state.dragOffsetY * 0.35}px)`;
+    card.classList.remove("drag-left", "drag-right", "drag-tune");
+    card.classList.toggle("drag-next", vertical > 28);
+    return;
+  }
+
+  if (horizontal <= vertical) return;
+
   const rotate = Math.max(-8, Math.min(8, state.dragOffsetX / 16));
-  card.style.transform = `translate(${state.dragOffsetX}px, ${state.dragOffsetY * 0.18}px) rotate(${rotate}deg)`;
-  card.classList.toggle("drag-right", state.dragOffsetX > 24);
-  card.classList.toggle("drag-left", state.dragOffsetX < -24);
-  card.classList.toggle("drag-next", state.lastResult && Math.abs(state.dragOffsetY) > 28);
+  card.style.transform = `translateX(${state.dragOffsetX}px) rotate(${rotate}deg)`;
+  card.classList.remove("drag-next");
+  card.classList.toggle("drag-tune", horizontal > 24);
 }
 
 function handlePointerUp(event) {
@@ -139,22 +157,20 @@ function handlePointerUp(event) {
   if (!state.isDragging) return;
   const horizontal = Math.abs(state.dragOffsetX);
   const vertical = Math.abs(state.dragOffsetY);
-  const answer = state.dragOffsetX > 0;
-  const canAnswer = !state.lastResult && !getCardOptions(getCurrentChallenge()).length;
-  const shouldAnswer = canAnswer && horizontal > 90 && horizontal > vertical;
-  const shouldAdvance = state.lastResult && (horizontal > 70 || vertical > 70);
+  const shouldTune = horizontal > 90 && horizontal > vertical;
+  const shouldAdvance = state.lastResult && vertical > 70 && vertical > horizontal;
 
   resetDrag(event);
 
   if (shouldAdvance) nextChallenge();
-  if (shouldAnswer) submitAnswer(answer);
+  if (shouldTune) setScreen("modes");
 }
 
 function resetDrag(event) {
   const card = event?.target?.closest?.(".challenge-card") || document.querySelector(".challenge-card");
   if (card) {
     card.style.transform = "";
-    card.classList.remove("drag-left", "drag-right", "drag-next");
+    card.classList.remove("drag-left", "drag-right", "drag-next", "drag-tune");
   }
   state.isDragging = false;
   state.dragStartX = 0;
@@ -174,7 +190,6 @@ function setScreen(screen) {
   state.lastResult = null;
   if (screen !== "challenge") clearAllTimers();
   render();
-  if (screen === "challenge") beginTimerIfNeeded();
 }
 
 function selectMode(modeId) {
@@ -185,7 +200,6 @@ function selectMode(modeId) {
   saveProfile(state.profile);
   refreshDeck();
   render();
-  beginTimerIfNeeded();
 }
 
 function toggleCategory(categoryId) {
@@ -203,7 +217,6 @@ function toggleCategory(categoryId) {
   saveProfile(state.profile);
   refreshDeck();
   render();
-  beginTimerIfNeeded();
 }
 
 function selectDifficulty(difficultyId) {
@@ -212,13 +225,11 @@ function selectDifficulty(difficultyId) {
   saveProfile(state.profile);
   refreshDeck();
   render();
-  beginTimerIfNeeded();
 }
 
 function toggleTuning() {
   state.showTuning = !state.showTuning;
   render();
-  beginTimerIfNeeded();
 }
 
 function startSession() {
@@ -239,7 +250,6 @@ function startSession() {
   saveProfile(state.profile);
   initMiniGame();
   render();
-  beginTimerIfNeeded();
 }
 
 function refreshDeck() {
@@ -275,31 +285,6 @@ function submitAnswer(userAnswer) {
     gained,
     userAnswer,
   };
-  clearTimer();
-  render();
-}
-
-function submitTimeout() {
-  if (state.screen !== "challenge" || state.lastResult) return;
-  const challenge = getCurrentChallenge();
-  if (!challenge) return;
-
-  const mode = getActiveMode();
-  const gained = calculateXp(challenge, false, mode, 0);
-  state.profile = scoreAnswer(state.profile, challenge, false, mode);
-  state.session = {
-    ...state.session,
-    incorrect: state.session.incorrect + 1,
-    completed: state.session.completed + 1,
-    xp: state.session.xp + gained,
-  };
-  saveProfile(state.profile);
-  state.lastResult = {
-    status: "wrong",
-    label: "Time",
-    gained,
-    userAnswer: "Timed out",
-  };
   clearAllTimers();
   render();
 }
@@ -323,12 +308,6 @@ function skipChallenge() {
   render();
 }
 
-function stopTimerChallenge() {
-  const challenge = getCurrentChallenge();
-  if (!challenge || challenge.miniGame !== "timer" || state.lastResult) return;
-  submitAnswer(state.timerValue % 2 === 0);
-}
-
 function nextChallenge() {
   clearAllTimers();
   const previousIds = state.deck.slice(-10).map((challenge) => challenge.id);
@@ -340,7 +319,21 @@ function nextChallenge() {
   state.screen = "challenge";
   initMiniGame();
   render();
-  beginTimerIfNeeded();
+}
+
+function retryChallenge() {
+  clearAllTimers();
+  const current = getCurrentChallenge();
+  state.lastResult = null;
+
+  if (current?.category === "math" && !current.isStage) {
+    state.deck[state.currentIndex] = createMathRetry(current);
+  } else {
+    state.deck[state.currentIndex] = { ...current };
+  }
+
+  initMiniGame();
+  render();
 }
 
 function finishSession() {
@@ -361,39 +354,9 @@ function resetStats() {
   startSession();
 }
 
-function beginTimerIfNeeded() {
-  clearTimer();
-  if (state.screen !== "challenge" || state.lastResult) return;
-
-  const mode = getActiveMode();
-  const challenge = getCurrentChallenge();
-  if (challenge?.isStage) return;
-  const seconds = challenge?.miniGame === "timer" ? 9 : getTimerForMode(mode);
-  if (!seconds) return;
-
-  state.timerValue = seconds;
-  renderTimerOnly();
-  state.timerId = window.setInterval(() => {
-    state.timerValue -= 1;
-    renderTimerOnly();
-    if (state.timerValue <= 0) submitTimeout();
-  }, 1000);
-}
-
-function getTimerForMode(mode) {
-  if (state.difficulty === "easy" && mode.id !== "chaos") return mode.timer + 4;
-  if (state.difficulty === "hard") return Math.max(4, mode.timer - 2);
-  return mode.timer;
-}
-
 function renderTimerOnly() {
   const node = document.querySelector("[data-timer]");
   if (node) node.textContent = getHudStatus(getCurrentChallenge());
-}
-
-function clearTimer() {
-  if (state.timerId) window.clearInterval(state.timerId);
-  state.timerId = null;
 }
 
 function clearMiniTimer() {
@@ -402,12 +365,21 @@ function clearMiniTimer() {
 }
 
 function clearAllTimers() {
-  clearTimer();
   clearMiniTimer();
 }
 
 function goBackToPortfolio() {
   window.location.href = "../../apps.html";
+}
+
+function requestExitConfirm() {
+  state.confirmExit = true;
+  render();
+}
+
+function closeExitConfirm() {
+  state.confirmExit = false;
+  render();
 }
 
 function getActiveMode() {
@@ -418,12 +390,54 @@ function getCurrentChallenge() {
   return state.deck[state.currentIndex];
 }
 
+function createMathRetry(current) {
+  if (current.type === "multiplication") {
+    const a = randomInt(state.difficulty === "hard" ? 9 : 4, state.difficulty === "hard" ? 15 : 12);
+    const b = randomInt(4, state.difficulty === "hard" ? 12 : 10);
+    return buildMathCard(current, `${a} × ${b}`, a * b, `${a} × ${b} = ${a * b}.`);
+  }
+
+  if (current.type === "percentages") {
+    const percent = [10, 15, 20, 25, 30][randomInt(0, 4)];
+    const base = [40, 50, 60, 80, 120, 200][randomInt(0, 5)];
+    const answer = Math.round((percent / 100) * base);
+    return buildMathCard(current, `${percent}% of ${base}`, answer, `${percent}% of ${base} is ${answer}.`);
+  }
+
+  const a = randomInt(state.difficulty === "hard" ? 35 : 12, state.difficulty === "hard" ? 98 : 64);
+  const b = randomInt(8, state.difficulty === "hard" ? 77 : 49);
+  return buildMathCard(current, `${a} + ${b}`, a + b, `${a} + ${b} = ${a + b}.`);
+}
+
+function buildMathCard(current, prompt, answerNumber, detail) {
+  const answer = String(answerNumber);
+  const decoys = new Set();
+  while (decoys.size < 3) {
+    const offset = randomInt(-12, 12) || 4;
+    const option = Math.max(0, answerNumber + offset);
+    if (option !== answerNumber) decoys.add(String(option));
+  }
+  return {
+    ...current,
+    id: `${current.id}-retry-${Date.now()}`,
+    title: "Retry Remix",
+    prompt,
+    answer,
+    correctText: answer,
+    options: shuffleForMini([answer, ...decoys]),
+    detail,
+  };
+}
+
+function randomInt(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
 function getHudStatus(challenge) {
   if (!challenge) return "Ready";
   if (challenge.miniGame === "precisionTimer") return `${((state.mini.elapsedMs || 0) / 1000).toFixed(2)}s`;
   if (challenge.miniGame === "speedTap") return `${state.mini.remaining ?? challenge.seconds}s`;
-  if (state.timerId) return `${state.timerValue}s`;
-  return challenge.isStage ? "Live" : "Ready";
+  return challenge.isStage ? "Live" : "Free play";
 }
 
 function initMiniGame() {
@@ -439,7 +453,8 @@ function initMiniGame() {
     const started = Date.now();
     state.miniTimerId = window.setInterval(() => {
       state.mini.elapsedMs = Date.now() - started;
-      renderMiniOnly();
+      renderPrecisionTimerOnly(challenge);
+      renderTimerOnly();
     }, 33);
     return;
   }
@@ -499,6 +514,15 @@ function renderMiniOnly() {
   const host = document.querySelector("[data-mini-host]");
   if (host && !state.lastResult) host.innerHTML = renderStageGame(getCurrentChallenge());
   renderTimerOnly();
+}
+
+function renderPrecisionTimerOnly(challenge) {
+  const face = document.querySelector("[data-precision-face]");
+  if (!face || !challenge) return;
+  const elapsed = ((state.mini.elapsedMs || 0) / 1000).toFixed(2);
+  const delta = Math.abs((state.mini.elapsedMs || 0) - challenge.targetMs);
+  face.textContent = `${elapsed}s`;
+  face.classList.toggle("sweet", delta <= challenge.toleranceMs);
 }
 
 function handleMiniAction(data) {
@@ -709,7 +733,7 @@ function submitAnswerWithResult(correct, userAnswer, metric = null) {
     userAnswer,
     metric,
   };
-  clearTimer();
+  clearAllTimers();
   render();
 }
 
@@ -790,6 +814,7 @@ function render() {
         ${renderScreen()}
       </main>
       ${renderBottomNav()}
+      ${state.confirmExit ? renderExitConfirm() : ""}
     </div>
   `;
 }
@@ -916,9 +941,6 @@ function renderMiniGame(challenge) {
       </div>
     `;
   }
-  if (challenge.miniGame === "timer") {
-    return `<button class="timer-stop" data-action="stopTimer">Stop Timer</button>`;
-  }
   return "";
 }
 
@@ -928,7 +950,7 @@ function renderStageGame(challenge) {
     const delta = Math.abs((state.mini.elapsedMs || 0) - challenge.targetMs);
     return `
       <div class="precision-timer">
-        <div class="timer-face ${delta <= challenge.toleranceMs ? "sweet" : ""}">${elapsed}s</div>
+        <div class="timer-face ${delta <= challenge.toleranceMs ? "sweet" : ""}" data-precision-face>${elapsed}s</div>
         <div class="target-line">Target ${(challenge.targetMs / 1000).toFixed(2)}s</div>
         <button class="stage-primary" data-action="mini" data-mini-action="stop">Stop</button>
       </div>
@@ -1096,7 +1118,7 @@ function renderAnswerControls(challenge) {
 function renderStageFooter(challenge) {
   return `
     <div class="stage-footer">
-      <span>${challenge.correctText}</span>
+      <span>Play the prompt</span>
       <button class="skip-link" data-action="skip">Skip</button>
     </div>
   `;
@@ -1105,11 +1127,12 @@ function renderStageFooter(challenge) {
 function renderResult(challenge) {
   const isWrong = state.lastResult.status === "wrong";
   const isSkip = state.lastResult.status === "skip";
+  const answerText = challenge.correctText || formatAnswer(challenge.answer);
   return `
     <div class="result-panel">
       <strong>${state.lastResult.label}</strong>
-      ${isWrong ? `<div class="correct-answer">Correct answer: ${challenge.correctText || formatAnswer(challenge.answer)}</div>` : ""}
-      ${isSkip ? `<div class="correct-answer">Combo reset. Correct answer: ${challenge.correctText || formatAnswer(challenge.answer)}</div>` : ""}
+      ${!isSkip ? `<div class="correct-answer">${isWrong ? "Correct answer" : "Answer"}: ${answerText}</div>` : ""}
+      ${isSkip ? `<div class="correct-answer">Combo reset. Correct answer: ${answerText}</div>` : ""}
       ${state.lastResult.metric ? `<div class="metric-chip">Your result: ${state.lastResult.metric.label}</div>` : ""}
       <p>${challenge.detail}</p>
       <div class="result-row">
@@ -1117,10 +1140,26 @@ function renderResult(challenge) {
         <span>Session +${state.session.xp} XP</span>
       </div>
       <div class="result-actions">
+        <button class="secondary-button" data-action="retry">Retry</button>
         <button class="secondary-button" data-action="summary">Done</button>
         <button class="primary-button" data-action="next">Next</button>
       </div>
-      <div class="next-hint">Swipe any direction for the next challenge.</div>
+      <div class="next-hint" aria-label="Swipe vertically for next">↓</div>
+    </div>
+  `;
+}
+
+function renderExitConfirm() {
+  return `
+    <div class="modal-scrim" role="dialog" aria-modal="true" aria-labelledby="exit-title">
+      <div class="confirm-card">
+        <strong id="exit-title">Exit SwipeQuest?</strong>
+        <p>Your current scroll session will stay in stats, but you will leave the game.</p>
+        <div class="confirm-actions">
+          <button class="secondary-button" data-action="cancelExit">Stay</button>
+          <button class="primary-button danger" data-action="confirmExit">Exit</button>
+        </div>
+      </div>
     </div>
   `;
 }
